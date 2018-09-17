@@ -1,0 +1,28 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+only_commits:
+  files:
+    - src/Plutus.Banktransaction/
+install:
+- ps: |
+    $xmlPath = "$env:appveyor_build_folder\src\Plutus.Banktransaction\Plutus.Banktransaction.Service.API\Plutus.BankTransaction.Service.API.csproj"
+    $xml = [xml](get-content $xmlPath)
+    $version = ($xml.Project.PropertyGroup | ? {$_.Version}).Version
+    $env:newversion = ($version.Substring(0, $version.LastIndexOf(".") + 1)) + $env:appveyor_build_number
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: $(newversion)
+  package_version: $(newversion)
+  assembly_version: $(newversion)
+  file_version: $(newversion)
+  informational_version: $(newversion)
+before_build:
+- ps: >-
+    set-location "src\Plutus.Banktransaction"
+
+    nuget restore
+build:
+  project: src\Plutus.Banktransaction\Plutus.Banktransaction.sln
+  verbosity: minimal

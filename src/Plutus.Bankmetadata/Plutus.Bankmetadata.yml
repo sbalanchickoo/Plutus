@@ -1,0 +1,43 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+
+# folder filter
+only_commits:
+  files:
+    - src/Plutus.Bankmetadata/
+skip_commits:
+  files:
+    - src/Plutus.Bankmetadata/DockerFile  
+skip_tags: true
+
+# restore packages
+before_build:
+- ps: >-
+    set-location "src\Plutus.Bankmetadata"
+
+    nuget restore -source "https://api.nuget.org/v3/index.json;https://www.myget.org/F/plutus-shared-library/api/v3/index.json"
+
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Debug
+
+build:
+  project: src\Plutus.Bankmetadata\Plutus.Bankmetadata.sln
+  verbosity: minimal
+
+# create deployment package
+after_build:
+- ps: msbuild.exe "Plutus.Bankmetadata.Service.API/Plutus.Bankmetadata.Service.API.csproj" /p:DeployOnBuild=true  /p:PublishProfile=FolderProfile /verbosity:quiet
+- 7z a Plutus.Bankmetadata.IISHost.zip .\Plutus.Bankmetadata.Service.API\bin\Release\Publish\*
+
+# artifacts configuration 
+artifacts:
+- path: src\Plutus.Bankmetadata\Plutus.Bankmetadata.IISHost.zip
+
+# deployment
+deploy:
+- provider: GitHub
+  release: Plutus.Bankmetadata.$(appveyor_build_version)
+  on:
+    branch: master
+  auth_token:
+    secure: ZqSb9zHkqC66GxTz+v4ku4+aNQzw6zBTTQ4Uh8mzEaz7RLHLMD9Hwd30Q+KGFdEp

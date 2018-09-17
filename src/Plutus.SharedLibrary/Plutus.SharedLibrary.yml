@@ -1,0 +1,43 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+only_commits:
+  files:
+    - src/Plutus.SharedLibrary/
+install:
+- ps: |
+    $xmlPath = "$env:appveyor_build_folder\src\Plutus.SharedLibrary\Plutus.SharedLibrary.CS\Plutus.SharedLibrary.CS.csproj"
+    $xml = [xml](get-content $xmlPath)
+    $version = ($xml.Project.PropertyGroup | ? {$_.Version}).Version
+    $env:newversion = ($version.Substring(0, $version.LastIndexOf(".") + 1)) + $env:appveyor_build_number
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: $(newversion)
+  package_version: $(newversion)
+  assembly_version: $(newversion)
+  file_version: $(newversion)
+  informational_version: $(newversion)
+before_build:
+- ps: >-
+    set-location "src\Plutus.SharedLibrary"
+
+    nuget restore
+build:
+  project: src\Plutus.SharedLibrary\Plutus.SharedLibrary.sln
+  verbosity: minimal
+after_build:
+- ps: >-
+    set-location "Plutus.SharedLibrary.CS"
+
+    $version = $env:appveyor_build_number
+
+    dotnet pack Plutus.SharedLibrary.CS.csproj
+artifacts:
+- path: '**\*.nupkg'
+  name: MyGet
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/plutus-shared-library/api/v2/package
+  api_key:
+    secure: ehx8op2dlGxoqqA6u5FOvP/i1xdWPUoDU7SdaveOidW45a12t0Wn8uQOGpAYOpoc

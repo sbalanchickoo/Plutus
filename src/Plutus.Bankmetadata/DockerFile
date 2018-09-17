@@ -1,0 +1,6 @@
+# Plutus Banktransaction API
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
+WORKDIR C:/Software
+COPY Publish .
+EXPOSE 8080
+ENTRYPOINT [ "dotnet", "Plutus.Bankmetadata.Service.API.dll"]
