@@ -11,8 +11,8 @@ namespace Plutus.Banktransaction.Service.API.Controllers.V1
     /// Central controller for bank transactions
     /// </summary>
     [ApiVersion("1.0")]
-    //[Produces("application/json")]
-    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [FormatFilter]
     public class BanktransactionsController : Controller
     {
         IBankTransaction _repo;
@@ -32,6 +32,7 @@ namespace Plutus.Banktransaction.Service.API.Controllers.V1
         /// Returns details about source repository
         /// </summary>
         [HttpGet]
+        [Route("[action]/{format?}")]
         public IActionResult SourceDetail()
         {
             InputDataSource ds = _repo.GetSourceDetails();
@@ -43,6 +44,8 @@ namespace Plutus.Banktransaction.Service.API.Controllers.V1
         /// Primary action, returns Bank transactions
         /// </summary>
         [HttpGet]
+        [Route("[action]/{format?}")]
+        [Route("{format?}")]
         public IActionResult BankTransactions()
         {
             List<BankTransaction> txns = new List<BankTransaction>();

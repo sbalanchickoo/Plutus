@@ -11,8 +11,6 @@ namespace Plutus.Bankmetadata.Service.API.Controllers.V1
     /// Central controller for bank metadata
     /// </summary>
     [ApiVersion("1.0")]
-    //[Produces("application/json")]
-    //[Route("api/v{version:apiVersion}/[controller]/[action]/{format?}")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [FormatFilter]
     public class BankmetadataController : Controller

@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Plutus.Bankmetadata.Data.FileSystem.CS.Models;
 using Plutus.SharedLibrary.CS.Interfaces;
-using System.Net.Http.Headers;
 
 namespace Plutus.Bankmetadata.Service.API
 {
