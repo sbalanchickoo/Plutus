@@ -48,8 +48,8 @@ bld/
 *.dll
 
 # Test files
-InputData/
-!/.md
+**/InputData/*
+!*.md
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

@@ -8,7 +8,7 @@ using Plutus.SharedLibrary.CS.Models;
 namespace Plutus.Banktransaction.Service.API.Controllers.V1
 {
     /// <summary>
-    /// Central controller for bank transactions
+    /// Controller with actions for Bank transactions
     /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]

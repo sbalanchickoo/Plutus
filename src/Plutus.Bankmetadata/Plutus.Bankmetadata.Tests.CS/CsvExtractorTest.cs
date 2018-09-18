@@ -21,11 +21,19 @@ namespace Plutus.Bankmetadata.Tests.CS
             {
                 new BankMetadata
                 {
-                    Date = Convert.ToDateTime("2011-12-30"),
-                    Amount = -500.50M,
-                    UserComments = "TestComment",
-                    Merchant = "R/P to John Doe",
-                    TransactionCategory = "TestCategory"
+                    Date = Convert.ToDateTime("2010-01-01"),
+                    Amount = 100.00M,
+                    UserComments = "Comment 1",
+                    Merchant = "Payee 1",
+                    TransactionCategory = "Money Received from Employee"
+                },
+                new BankMetadata
+                {
+                    Date = Convert.ToDateTime("2011-01-01"),
+                    Amount = 500.00M,
+                    UserComments = "Comment, 2",
+                    Merchant = "Payee 2",
+                    TransactionCategory = "Cash received from clients"
                 }
             }
                 .OrderBy(txn => txn.Date)
@@ -50,7 +58,7 @@ namespace Plutus.Bankmetadata.Tests.CS
         public void ExtractBankMetadatasFromCsv_OnInvalidCsv_ThrowException()
         {
             //Arrange
-            string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Valid_1.CSV");
+            string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Invalid_1.CSV");
             List<BankMetadata> txnList = new List<BankMetadata>()
                 .OrderBy(txn => txn.Date)
                 .OrderBy(txn => txn.Amount)
@@ -70,7 +78,7 @@ namespace Plutus.Bankmetadata.Tests.CS
         public void ExtractBankMetadatasFromCsv_OnInvalidXml_ThrowCorrectExceptionMessage()
         {
             //Arrange
-            string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Valid_1.CSV");
+            string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Invalid_1.CSV");
             CsvExtractor repo = new CsvExtractor();
 
             //Act
