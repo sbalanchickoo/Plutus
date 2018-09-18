@@ -49,7 +49,7 @@ bld/
 
 # Test files
 InputData/
-!*.md
+!/.md
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
