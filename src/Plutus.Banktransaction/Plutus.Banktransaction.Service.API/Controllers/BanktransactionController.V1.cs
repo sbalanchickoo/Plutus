@@ -45,7 +45,7 @@ namespace Plutus.Banktransaction.Service.API.Controllers.V1
         /// </summary>
         [HttpGet]
         [Route("[action]/{format?}")]
-        [Route("{format?}")]
+        [Route("")]
         public IActionResult BankTransactions()
         {
             List<BankTransaction> txns = new List<BankTransaction>();

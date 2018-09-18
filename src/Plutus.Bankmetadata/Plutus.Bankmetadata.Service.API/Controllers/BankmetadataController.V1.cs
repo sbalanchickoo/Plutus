@@ -45,7 +45,8 @@ namespace Plutus.Bankmetadata.Service.API.Controllers.V1
         /// </summary>
         [HttpGet]
         [Route("[action]/{format?}")]
-        [Route("{format?}")]
+        [Route("[action]")]
+        [Route("")]
         public IActionResult BankMetadata()
         {
             List<BankMetadata> txns = new List<BankMetadata>();
