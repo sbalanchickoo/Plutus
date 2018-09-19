@@ -6,6 +6,9 @@
     <OldToolsVersion>15.0</OldToolsVersion>
     <UpgradeBackupLocation>C:\My Development\Projects\Plutus\Plutus.BankTransaction.Service\src\Backup\</UpgradeBackupLocation>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.1\Plutus.Banktransaction.Tests.CS.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.2" />

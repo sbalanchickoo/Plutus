@@ -7,5 +7,4 @@
 
 ## Specification
 
-- File extension must be ".csv"
-- First three characters in filename must be "ban"
+- File extension must be ".ofx"

@@ -5,4 +5,8 @@
     <Version>1.0.1</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Plutus.SharedLibrary.CS.xml</DocumentationFile>
+  </PropertyGroup>
+
 </Project>

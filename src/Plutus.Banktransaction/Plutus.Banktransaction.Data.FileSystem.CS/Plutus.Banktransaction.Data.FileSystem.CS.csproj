@@ -6,6 +6,10 @@
     <RootNamespace>Plutus.Banktransaction.Data.FileSystem.CS</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Plutus.Banktransaction.Data.FileSystem.CS.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="appsettings.json" />
   </ItemGroup>
@@ -39,10 +43,6 @@
     <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="InputData\" />
   </ItemGroup>
 
 </Project>

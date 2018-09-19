@@ -87,10 +87,10 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
             }
         }
 
+        private string _folderName;
         /// <summary>
         /// Folder name that will hold CSV files
         /// </summary>
-        private string _folderName;
         public string FolderName
         {
             get
@@ -125,10 +125,10 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
             }
         }
 
+        private Logger _classLogger;
         /// <summary>
         /// Logging routine
         /// </summary>
-        public Logger _classLogger;
         public Logger ClassLogger
         {
             get

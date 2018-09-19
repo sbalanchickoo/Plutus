@@ -10,16 +10,27 @@ using Plutus.SharedLibrary.CS.Interfaces;
 
 namespace Plutus.Banktransaction.Service.API
 {
+    /// <summary>
+    /// Entry startup class
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Configuration interface to be able to read from appsettings
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
@@ -33,7 +44,9 @@ namespace Plutus.Banktransaction.Service.API
             services.AddScoped<IBankTransaction, BanktransactionRepo>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

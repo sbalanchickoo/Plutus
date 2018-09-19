@@ -10,9 +10,15 @@ using System.Linq;
 
 namespace Plutus.Banktransaction.Tests.CS
 {
+    /// <summary>
+    /// Test class to test methods in BanktransactionRepo class
+    /// </summary>
     [TestClass]
     public class BanktransactionRepoTest
     {
+        /// <summary>
+        /// Happy path for the GetSourceDetails method
+        /// </summary>
         [TestMethod]
         public void GetSourceDetails_OnNonBlankInput_ReturnInputSource()
         {
@@ -30,6 +36,9 @@ namespace Plutus.Banktransaction.Tests.CS
             Assert.AreEqual(DataSource.FileSystem, inputSource.InputDataSourceType);
         }
 
+        /// <summary>
+        /// Failure path for the GetSourceDetails method - Blank input
+        /// </summary>
         [TestMethod]
         public void GetSourceDetails_OnBlankInput_ReturnInputSource()
         {
@@ -44,6 +53,9 @@ namespace Plutus.Banktransaction.Tests.CS
             Assert.AreEqual(DataSource.FileSystem, inputSource.InputDataSourceType);
         }
 
+        /// <summary>
+        /// Failure path for the ExtractBankTransactionsFromOfx method - Bad input Ofx
+        /// </summary>
         [TestMethod]
         public void ExtractBankTransactionsFromOfx_OnInvalidOfx_ReturnEmptyTxnList()
         {
@@ -60,6 +72,9 @@ namespace Plutus.Banktransaction.Tests.CS
             CollectionAssert.AreEqual(txnList, output1, new BankTransactionComparer());
         }
 
+        /// <summary>
+        /// Failure path for the ExtractBankTransactionsFromOfx method - Bad input Xml
+        /// </summary>
         [TestMethod]
         public void ExtractBankTransactionsFromOfx_OnInvalidXml_ReturnEmptyTxnList()
         {
@@ -76,6 +91,9 @@ namespace Plutus.Banktransaction.Tests.CS
             CollectionAssert.AreEqual(txnList, output1, new BankTransactionComparer());
         }
 
+        /// <summary>
+        /// Happy path for the ExtractBankTransactionsFromOfx method
+        /// </summary>
         [TestMethod]
         public void ExtractBankTransactionsFromOfx_OnValidInputs_ReturnTxnList()
         {
@@ -110,6 +128,9 @@ namespace Plutus.Banktransaction.Tests.CS
             CollectionAssert.AreEqual(txnList, output1, new BankTransactionComparer());
         }
 
+        /// <summary>
+        /// Happy path for the ConsolidateTransactionsFromLists method
+        /// </summary>
         [TestMethod]
         public void ConsolidateTransactionsFromLists_OnExecute_ReturnConsolidatedTxnList()
         {
@@ -175,9 +196,11 @@ namespace Plutus.Banktransaction.Tests.CS
                 }
             }.OrderBy(txn => txn.FITID).ToList();
 
-            List<List<BankTransaction>> txnInput = new List<List<BankTransaction>>();
-            txnInput.Add(txnList1);
-            txnInput.Add(txnList2);
+            List<List<BankTransaction>> txnInput = new List<List<BankTransaction>>
+            {
+                txnList1,
+                txnList2
+            };
 
             //Act
             BanktransactionRepo repo = new BanktransactionRepo();
@@ -188,6 +211,9 @@ namespace Plutus.Banktransaction.Tests.CS
             CollectionAssert.AreEqual(txnListConsolidated, output1, new BankTransactionComparer());
         }
 
+        /// <summary>
+        /// Test for the GetBankTransactions - Folder change functionality
+        /// </summary>
         [TestMethod]
         public void GetBankTransactions_OnFolderChange_ReturnTxnList()
         {

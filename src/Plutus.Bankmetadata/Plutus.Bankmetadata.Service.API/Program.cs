@@ -6,8 +6,14 @@ using System;
 
 namespace Plutus.Bankmetadata.Service.API
 {
+    /// <summary>
+    /// Entry point
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Entry method
+        /// </summary>
         public static void Main(string[] args)
         {
             // NLog: setup the logger first to catch all errors
@@ -31,6 +37,9 @@ namespace Plutus.Bankmetadata.Service.API
 
         }
 
+        /// <summary>
+        /// Kestrel webhost builder
+        /// </summary>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()

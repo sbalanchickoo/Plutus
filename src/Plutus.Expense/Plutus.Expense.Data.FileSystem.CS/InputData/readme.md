@@ -8,4 +8,4 @@
 ## Specification
 
 - File extension must be ".csv"
-- First three characters in filename must be "ban"
+- First three characters in filename must be "exp"

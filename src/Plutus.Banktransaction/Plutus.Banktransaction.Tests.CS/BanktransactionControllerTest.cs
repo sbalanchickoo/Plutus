@@ -13,12 +13,18 @@ using System.Linq;
 
 namespace Plutus.Banktransaction.Tests.CS
 {
+    /// <summary>
+    /// Test class to test methods in BanktransactionController controller class
+    /// </summary>
     [TestClass]
     public class BanktransactionControllerTest
     {
         private IBankTransaction _repo;
         private ILogger<BanktransactionsController> _logger;
 
+        /// <summary>
+        /// Test initialization step, List of fake data, Moq repo
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
@@ -60,6 +66,9 @@ namespace Plutus.Banktransaction.Tests.CS
             _logger = mock.Object;
         }
 
+        /// <summary>
+        /// Happy path for the SourceDetail action - type
+        /// </summary>
         [TestMethod]
         public void SourceDetail_OnExecute_ReturnSourceDetailType()
         {
@@ -74,6 +83,9 @@ namespace Plutus.Banktransaction.Tests.CS
             Assert.IsInstanceOfType(requestResult, typeof(OkObjectResult));
         }
 
+        /// <summary>
+        /// Happy path for the SourceDetail action - content
+        /// </summary>
         [TestMethod]
         public void SourceDetail_OnExecute_ReturnSourceDetail()
         {
@@ -90,6 +102,9 @@ namespace Plutus.Banktransaction.Tests.CS
             Assert.AreEqual(_repo.GetSourceDetails().InputDataSourceType, result.InputDataSourceType);
         }
 
+        /// <summary>
+        /// Happy path for the BankTransactions action - type
+        /// </summary>
         [TestMethod]
         public void BankTransactions_OnExecute_ReturnBankTransactionsType()
         {
@@ -104,6 +119,9 @@ namespace Plutus.Banktransaction.Tests.CS
             Assert.IsInstanceOfType(requestResult, typeof(OkObjectResult));
         }
 
+        /// <summary>
+        /// Happy path for the BankTransactions action - content
+        /// </summary>
         [TestMethod]
         public void BankTransactions_OnExecute_ReturnBankTransactions()
         {

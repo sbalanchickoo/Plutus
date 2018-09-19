@@ -13,6 +13,9 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
     public class CsvExtractor
     {
         private string _delimiter;
+        /// <summary>
+        /// Delimiter used in CSV file
+        /// </summary>
         public string Delimiter
         {
             get
@@ -38,22 +41,19 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         public IEnumerable<BankMetadata> ExtractBankMetadataFromCsvString(string csvContent)
         {
             List<BankMetadata> txnList = new List<BankMetadata>();
-            List<BankMetadataInput> txnListInput = new List<BankMetadataInput>();
             try
             {
                 var csv = new CsvReader(new StringReader(csvContent));
                 csv.Configuration.Delimiter = Delimiter;
-                //txnListInput = csv.GetRecords<BankMetadataInput>().ToList();
-                Type inputType = Type.GetType(Delimiter);
-                txnListInput = csv.GetRecords<BankMetadataInput>().ToList();
+                var txnListInput = csv.GetRecords<dynamic>().ToList();
 
                 foreach (var input in txnListInput)
                 {
                     BankMetadata row = new BankMetadata
                     {
-                        Amount = input.amount,
+                        Amount = Convert.ToDecimal(input.amount),
                         Merchant = input.bankdescription,
-                        Date = input.date,
+                        Date = Convert.ToDateTime(input.date),
                         UserComments = input.usercomments,
                         TransactionCategory = input.description
                     };

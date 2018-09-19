@@ -9,9 +9,15 @@ using System.Linq;
 
 namespace Plutus.Banktransaction.Tests.CS
 {
+    /// <summary>
+    /// Test class to test methods in OfxExtractor class
+    /// </summary>
     [TestClass]
     public class OfxExtractorTest
     {
+        /// <summary>
+        /// Happy path for the ExtractXmlFromOfx method
+        /// </summary>
         [TestMethod]
         public void ExtractXmlFromOfx_OnValidOfx_ReturnValidXml()
         {
@@ -27,6 +33,9 @@ namespace Plutus.Banktransaction.Tests.CS
             Assert.AreEqual(output1, output);
         }
 
+        /// <summary>
+        /// Exception test for the ExtractXmlFromOfx method
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FieldAccessException))]
         public void ExtractXmlFromOfx_OnInvalidOfx_ThrowException()
@@ -39,6 +48,9 @@ namespace Plutus.Banktransaction.Tests.CS
             string output = repo.ExtractXmlFromOfx(input1);
         }
 
+        /// <summary>
+        /// Exception message test for the ExtractXmlFromOfx method
+        /// </summary>
         [TestMethod]
         public void ExtractXmlFromOfx_OnInvalidOfx_ThrowCorrectExceptionMessage()
         {
@@ -59,6 +71,9 @@ namespace Plutus.Banktransaction.Tests.CS
             }
         }
 
+        /// <summary>
+        /// Happy path for the ExtractBankTransactionsFromXml method
+        /// </summary>
         [TestMethod]
         public void ExtractBankTransactionsFromXml_OnValidXml_ReturnTxnList()
         {
@@ -83,6 +98,9 @@ namespace Plutus.Banktransaction.Tests.CS
             CollectionAssert.AreEqual(txnList, output1, new BankTransactionComparer());
         }
 
+        /// <summary>
+        /// Exception test for the ExtractBankTransactionsFromXml method
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FieldAccessException))]
         public void ExtractBankTransactionsFromXml_OnInvalidXml_ThrowException()
@@ -96,6 +114,9 @@ namespace Plutus.Banktransaction.Tests.CS
             List<BankTransaction> output1 = repo.ExtractBankTransactionsFromXml(input1).OrderBy(txn => txn.FITID).ToList();
         }
 
+        /// <summary>
+        /// Exception message test for the ExtractBankTransactionsFromXml method
+        /// </summary>
         [TestMethod]
         public void ExtractBankTransactionsFromXml_OnInvalidXml_ThrowCorrectExceptionMessage()
         {

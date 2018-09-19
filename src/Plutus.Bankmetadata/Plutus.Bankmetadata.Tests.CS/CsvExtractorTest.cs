@@ -9,15 +9,18 @@ using System.Linq;
 
 namespace Plutus.Bankmetadata.Tests.CS
 {
+    /// <summary>
+    /// Test class to test methods in CsvExtractor class
+    /// </summary>
     [TestClass]
     public class CsvExtractorTest
     {
-        [TestMethod]
-        public void ExtractBankMetadatasFromCsv_OnValidCsv_ReturnMetadataList()
+        List<BankMetadata> txnList = new List<BankMetadata>();
+
+        [TestInitialize]
+        public void Setup()
         {
-            //Arrange
-            string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Valid_1.CSV");
-            List<BankMetadata> txnList = new List<BankMetadata>
+            txnList = new List<BankMetadata>
             {
                 new BankMetadata
                 {
@@ -41,6 +44,17 @@ namespace Plutus.Bankmetadata.Tests.CS
                 .OrderBy(txn => txn.Merchant)
                 .ToList();
 
+        }
+
+        /// <summary>
+        /// Happy path for the ExtractBankMetadatasFromCsv method
+        /// </summary>
+        [TestMethod]
+        public void ExtractBankMetadatasFromCsv_OnValidCsv_ReturnMetadataList()
+        {
+            //Arrange
+            string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Valid_1.CSV");
+            
             //Act
             CsvExtractor repo = new CsvExtractor();
             List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsvString(input1)
@@ -53,20 +67,18 @@ namespace Plutus.Bankmetadata.Tests.CS
             CollectionAssert.AreEqual(txnList, output1, new BankMetadataComparer());
         }
 
+        /// <summary>
+        /// Exception test for the ExtractBankMetadatasFromCsv method
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FieldAccessException))]
         public void ExtractBankMetadatasFromCsv_OnInvalidCsv_ThrowException()
         {
             //Arrange
             string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Invalid_1.CSV");
-            List<BankMetadata> txnList = new List<BankMetadata>()
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList(); ;
             CsvExtractor repo = new CsvExtractor();
 
-            //Act
+            //Act, Assert
             List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsvString(input1)
                 .OrderBy(txn => txn.Date)
                 .OrderBy(txn => txn.Amount)
@@ -74,6 +86,9 @@ namespace Plutus.Bankmetadata.Tests.CS
                 .ToList();
         }
 
+        /// <summary>
+        /// Exception message test for the ExtractBankMetadatasFromCsv method
+        /// </summary>
         [TestMethod]
         public void ExtractBankMetadatasFromCsv_OnInvalidXml_ThrowCorrectExceptionMessage()
         {

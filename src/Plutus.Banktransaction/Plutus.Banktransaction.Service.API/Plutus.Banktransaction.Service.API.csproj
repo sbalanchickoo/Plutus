@@ -6,12 +6,15 @@
     <RootNamespace>Plutus.Banktransaction.Service.API</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.1\Plutus.Banktransaction.Service.API.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Remove="nlog.config" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="InputData\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
