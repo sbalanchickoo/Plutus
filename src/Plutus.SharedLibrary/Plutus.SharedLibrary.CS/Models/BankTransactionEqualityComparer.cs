@@ -3,7 +3,7 @@
 namespace Plutus.SharedLibrary.CS.Models
 {
     /// <summary>
-    /// IEquatable methods to compare two objects in list
+    /// IEquatable methods to compare two BankTransaction objects
     /// </summary>
     public partial class BankTransaction : IEquatable<BankTransaction>
     {

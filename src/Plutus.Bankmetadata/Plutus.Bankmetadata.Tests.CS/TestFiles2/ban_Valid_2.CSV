@@ -1,0 +1,3 @@
+"date","bankdescription","accountnumber","employeename","description","usercomments","amount","net","vat",
+"2011-01-01","Payee 2","12345","","Cash received from clients","Comment, 2","500.00","500.00","0.00",
+"2011-01-01","Payee 3","12345","","Cash received from clients","Comment, 2","500.00","500.00","0.00",

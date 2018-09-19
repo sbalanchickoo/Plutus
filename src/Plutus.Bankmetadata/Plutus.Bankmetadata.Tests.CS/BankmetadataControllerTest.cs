@@ -13,6 +13,9 @@ using System.Linq;
 
 namespace Plutus.Bankmetadata.Tests.CS
 {
+    /// <summary>
+    /// Test class to test methods in BankmetadataController controller class
+    /// </summary>
     [TestClass]
     public class BankmetadataControllerTest
     {
@@ -21,6 +24,9 @@ namespace Plutus.Bankmetadata.Tests.CS
 
         List<BankMetadata> txnList = new List<BankMetadata>();
 
+        /// <summary>
+        /// Initial setup, create Source List, Moq repo object
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
@@ -42,6 +48,15 @@ namespace Plutus.Bankmetadata.Tests.CS
                     Merchant = "Payee 2",
                     TransactionCategory = "Cash received from clients"
                 }
+                ,
+                new BankMetadata
+                {
+                    Date = Convert.ToDateTime("2011-01-01"),
+                    Amount = 500.00M,
+                    UserComments = "Comment, 2",
+                    Merchant = "Payee 3",
+                    TransactionCategory = "Cash received from clients"
+                }
             }
                 .OrderBy(txn => txn.Date)
                 .OrderBy(txn => txn.Amount)
@@ -49,7 +64,7 @@ namespace Plutus.Bankmetadata.Tests.CS
                 .ToList();
 
             var repositoryMock = new Mock<IBankMetadata>();
-            repositoryMock.Setup(r => r.GetBankMetadatas()).Returns(txnList);
+            repositoryMock.Setup(r => r.GetBankMetadata()).Returns(txnList);
             InputDataSource inputSource = new InputDataSource
             {
                 InputDataSourceType = DataSource.FileSystem,
@@ -62,6 +77,9 @@ namespace Plutus.Bankmetadata.Tests.CS
             _logger = mock.Object;
         }
 
+        /// <summary>
+        /// Happy path for the SourceDetail action - type
+        /// </summary>
         [TestMethod]
         public void SourceDetail_OnExecute_ReturnSourceDetailType()
         {
@@ -76,6 +94,9 @@ namespace Plutus.Bankmetadata.Tests.CS
             Assert.IsInstanceOfType(requestResult, typeof(OkObjectResult));
         }
 
+        /// <summary>
+        /// Happy path for the SourceDetail action - content
+        /// </summary>
         [TestMethod]
         public void SourceDetail_OnExecute_ReturnSourceDetail()
         {
@@ -92,34 +113,40 @@ namespace Plutus.Bankmetadata.Tests.CS
             Assert.AreEqual(_repo.GetSourceDetails().InputDataSourceType, result.InputDataSourceType);
         }
 
+        /// <summary>
+        /// Happy path for the BankTransactions action - type
+        /// </summary>
         [TestMethod]
-        public void BankMetadatas_OnExecute_ReturnBankMetadatasType()
+        public void BankMetadata_OnExecute_ReturnBankMetadataType()
         {
             //Arrange
             BankmetadataController controller = new BankmetadataController(_repo, _logger);
 
             //Act
-            var inputDataSource = controller.BankMetadatas();
+            var inputDataSource = controller.BankMetadata();
             var requestResult = inputDataSource as OkObjectResult;
 
             //Assert
             Assert.IsInstanceOfType(requestResult, typeof(OkObjectResult));
         }
 
+        /// <summary>
+        /// Happy path for the BankTransactions action - content
+        /// </summary>
         [TestMethod]
-        public void BankMetadatas_OnExecute_ReturnBankMetadatas()
+        public void BankMetadata_OnExecute_ReturnBankMetadata()
         {
             //Arrange
             BankmetadataController controller = new BankmetadataController(_repo, _logger);
 
             //Act
-            var inputDataSource = controller.BankMetadatas();
+            var inputDataSource = controller.BankMetadata();
             var requestResult = inputDataSource as OkObjectResult;
             List<BankMetadata> txnList = (List<BankMetadata>)requestResult.Value;
 
             //Assert
             Assert.AreEqual(3, txnList.Count);
-            CollectionAssert.AreEqual(_repo.GetBankMetadatas().ToList(), txnList, new BankMetadataComparer());
+            CollectionAssert.AreEqual(_repo.GetBankMetadata().ToList(), txnList, new BankMetadataComparer());
         }
     }
 }

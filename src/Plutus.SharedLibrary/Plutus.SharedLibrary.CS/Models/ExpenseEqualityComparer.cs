@@ -3,14 +3,14 @@
 namespace Plutus.SharedLibrary.CS.Models
 {
     /// <summary>
-    /// IEquatable methods to compare two BankMetadata objects
+    /// IEquatable methods to compare two Expense objects
     /// </summary>
-    public partial class BankMetadata : IEquatable<BankMetadata>
+    public partial class Expense : IEquatable<Expense>
     {
         /// <summary>
         /// Overriding equatable method
         /// </summary>
-        public bool Equals(BankMetadata other)
+        public bool Equals(Expense other)
         {
             if (other == null)
             {
@@ -24,11 +24,11 @@ namespace Plutus.SharedLibrary.CS.Models
             {
                 return false;
             }
-            else if (Merchant != other.Merchant)
+            else if (TransactionCategory != other.TransactionCategory)
             {
                 return false;
             }
-            else if (UserComments != other.UserComments)
+            else if (Description != other.Description)
             {
                 return false;
             }
@@ -46,17 +46,17 @@ namespace Plutus.SharedLibrary.CS.Models
             // Get the hash code for the Date field if it is not null. 
             int hashDate = Date == null ? 0 : Date.GetHashCode();
 
-            // Get the hash code for the Description field. 
-            int hashMerchant = Merchant.GetHashCode();
-
-            // Get the hash code for the UserComments field. 
-            int hashUserComments = UserComments.GetHashCode();
-
             // Get the hash code for the Amount field. 
             int hashAmount = Amount.GetHashCode();
 
+            // Get the hash code for the UserComments field. 
+            int hashTransactionCategory = TransactionCategory.GetHashCode();
+
+            // Get the hash code for the UserComments field. 
+            int hashDescription = Description.GetHashCode();
+
             // Calculate the hash code for the transaction. 
-            return hashDate ^ hashMerchant ^ hashUserComments ^ hashAmount;
+            return hashDate ^ hashAmount ^ hashTransactionCategory ^ hashDescription;
         }
     }
 }

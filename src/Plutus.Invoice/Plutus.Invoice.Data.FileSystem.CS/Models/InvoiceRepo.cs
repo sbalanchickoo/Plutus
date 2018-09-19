@@ -11,10 +11,11 @@ using NLog;
 namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
 {
     /// <summary>
-    /// This class is a local file-system-based repository of Bank Metadata ...
+    /// This class is a local file-system-based repository of Bank Metadatas ...
+    /// ... from the Business Bank account.
     /// These are obtained from CSV files
     /// </summary>
-    public class BankmetadataRepo : IBankMetadata
+    public class InvoiceRepo : IBankMetadata
     {
         private bool _isDirty;
         private FileSystemWatcher _watcher;
@@ -149,7 +150,7 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         /// ... scanning directory, and Metadatas in them, adding them to repository, ...
         /// ... and initializing watcher method based on directory size
         /// </summary>
-        public BankmetadataRepo()
+        public InvoiceRepo()
         {
             _bankMetadataList = new List<BankMetadata>();
             _isDirty = true;

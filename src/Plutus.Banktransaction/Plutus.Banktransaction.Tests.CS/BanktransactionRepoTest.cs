@@ -54,7 +54,7 @@ namespace Plutus.Banktransaction.Tests.CS
         }
 
         /// <summary>
-        /// Failure path for the ExtractBankTransactionsFromOfx method - Bad input Ofx
+        /// Failure path for the ExtractBankTransactionsFromOfx method - Bad input Ofx, return empty list
         /// </summary>
         [TestMethod]
         public void ExtractBankTransactionsFromOfx_OnInvalidOfx_ReturnEmptyTxnList()
@@ -73,7 +73,7 @@ namespace Plutus.Banktransaction.Tests.CS
         }
 
         /// <summary>
-        /// Failure path for the ExtractBankTransactionsFromOfx method - Bad input Xml
+        /// Failure path for the ExtractBankTransactionsFromOfx method - Bad input Xml, return empty list
         /// </summary>
         [TestMethod]
         public void ExtractBankTransactionsFromOfx_OnInvalidXml_ReturnEmptyTxnList()

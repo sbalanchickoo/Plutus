@@ -8,17 +8,17 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using NLog;
 
-namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
+namespace Plutus.Expense.Data.FileSystem.CS.Models
 {
     /// <summary>
-    /// This class is a local file-system-based repository of Bank Metadata ...
+    /// This class is a local file-system-based repository of Expense data ...
     /// These are obtained from CSV files
     /// </summary>
-    public class BankmetadataRepo : IBankMetadata
+    public class ExpenseRepo : IExpense
     {
         private bool _isDirty;
         private FileSystemWatcher _watcher;
-        private IEnumerable<BankMetadata> _bankMetadataList;
+        private IEnumerable<Expense> _ExpenseList;
         private IEnumerable<DirectoryFile> _fileList;
         private void OnChanged(object source, FileSystemEventArgs e)
         {
@@ -42,7 +42,7 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
                 switch (extension.ToUpper())
                 {
                     case ".OFX":
-                        newFile.DirectoryFileType = FileType.BankMetadata;
+                        newFile.DirectoryFileType = FileType.Expense;
                         break;
                     case ".CSV":
                         switch (file.Substring(FolderName.Length + 1, 3).ToUpper())
@@ -54,7 +54,7 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
                                 newFile.DirectoryFileType = FileType.Expense;
                                 break;
                             case "BAN":
-                                newFile.DirectoryFileType = FileType.BankMetadata;
+                                newFile.DirectoryFileType = FileType.Expense;
                                 break;
                             default:
                                 newFile.DirectoryFileType = FileType.Invalid;
@@ -149,9 +149,9 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         /// ... scanning directory, and Metadatas in them, adding them to repository, ...
         /// ... and initializing watcher method based on directory size
         /// </summary>
-        public BankmetadataRepo()
+        public ExpenseRepo()
         {
-            _bankMetadataList = new List<BankMetadata>();
+            _ExpenseList = new List<Expense>();
             _isDirty = true;
         }
 
@@ -177,13 +177,13 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         /// <summary>
         /// Get Bank Metadatas from xml string
         /// </summary>
-        public IEnumerable<BankMetadata> ExtractBankMetadataFromCsv(string content)
+        public IEnumerable<Expense> ExtractExpenseFromCsv(string content)
         {
-            IEnumerable<BankMetadata> txnList = new List<BankMetadata>();
+            IEnumerable<Expense> txnList = new List<Expense>();
             try
             {
                 CsvExtractor csvExtractor = new CsvExtractor();
-                txnList = csvExtractor.ExtractBankMetadataFromCsvString(content);
+                txnList = csvExtractor.ExtractExpenseFromCsvString(content);
                 ClassLogger.Info("File Csv parsed");
                 ClassLogger.Info("Metadata read from files");
             }
@@ -202,12 +202,12 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         }
 
         /// <summary>
-        /// For each BankMetadata FileType in FileList list, send path to GetFileBankMetadatas ...
+        /// For each Expense FileType in FileList list, send path to GetFileExpenses ...
         /// ... and for each Metadata, add to repository list if not already present
         /// </summary>
-        public IEnumerable<BankMetadata> ConsolidateMetadataFromLists(IEnumerable<IEnumerable<BankMetadata>> MetadataLists)
+        public IEnumerable<Expense> ConsolidateMetadataFromLists(IEnumerable<IEnumerable<Expense>> MetadataLists)
         {
-            List<BankMetadata> txnList = new List<BankMetadata>();
+            List<Expense> txnList = new List<Expense>();
             foreach (var MetadataList in MetadataLists)
             {
                 foreach (var Metadata in MetadataList)
@@ -243,30 +243,30 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         /// Returns distinct list of all Bank Metadatas contained within files in a folder, ...
         /// return from local list if still valid or scan afresh if repository is marked dirty
         /// </summary>
-        public IEnumerable<BankMetadata> GetBankMetadata()
+        public IEnumerable<Expense> GetExpense()
         {
             if (_isDirty)
             {
                 ClassLogger.Info("Repository dirty, repopulating repo");
                 _fileList = ScanFolder();
-                ClassLogger.Info($"Files found: [{_fileList.Where(f => f.DirectoryFileType == FileType.BankMetadata).ToList().Count()}]");
-                List<List<BankMetadata>> Metadatalists = new List<List<BankMetadata>>();
+                ClassLogger.Info($"Files found: [{_fileList.Where(f => f.DirectoryFileType == FileType.Expense).ToList().Count()}]");
+                List<List<Expense>> Metadatalists = new List<List<Expense>>();
                 foreach (var file in _fileList)
                 {
                     ClassLogger.Info($"Start reading File: [{file.FileName}]");
-                    if (file.DirectoryFileType == FileType.BankMetadata)
+                    if (file.DirectoryFileType == FileType.Expense)
                     {
-                        List<BankMetadata> MetadataList = new List<BankMetadata>();
+                        List<Expense> MetadataList = new List<Expense>();
                         string fileContent = ExtractCsvFileContent(file.FileName);
-                        MetadataList = ExtractBankMetadataFromCsv(fileContent).ToList();
+                        MetadataList = ExtractExpenseFromCsv(fileContent).ToList();
                         ClassLogger.Info($"Metadata found: [{MetadataList.Count}]");
                         Metadatalists.Add(MetadataList);
                     }
                     ClassLogger.Info($"Finished reading File: [{file.FileName}]");
                 }
-                List<BankMetadata> consolidatedBankMetadataList = new List<BankMetadata>();
-                consolidatedBankMetadataList = ConsolidateMetadataFromLists(Metadatalists).ToList();
-                _bankMetadataList = consolidatedBankMetadataList;
+                List<Expense> consolidatedExpenseList = new List<Expense>();
+                consolidatedExpenseList = ConsolidateMetadataFromLists(Metadatalists).ToList();
+                _ExpenseList = consolidatedExpenseList;
                 ClassLogger.Info("Repository repopulation complete");
                 _isDirty = false;
             }
@@ -275,7 +275,7 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
                 ClassLogger.Info("Repository not dirty.");
             }
             ClassLogger.Info("RepositoryMetadata request complete.");
-            return _bankMetadataList;
+            return _ExpenseList;
         }
         #endregion
     }

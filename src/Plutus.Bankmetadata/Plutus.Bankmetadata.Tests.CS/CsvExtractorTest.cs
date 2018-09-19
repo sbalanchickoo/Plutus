@@ -17,6 +17,9 @@ namespace Plutus.Bankmetadata.Tests.CS
     {
         List<BankMetadata> txnList = new List<BankMetadata>();
 
+        /// <summary>
+        /// Test initialization step, List of fake data
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
