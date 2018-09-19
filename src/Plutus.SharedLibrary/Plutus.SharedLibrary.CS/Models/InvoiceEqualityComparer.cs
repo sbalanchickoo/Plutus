@@ -63,7 +63,7 @@ namespace Plutus.SharedLibrary.CS.Models
             int hashDescription = Description.GetHashCode();
 
             // Calculate the hash code for the transaction. 
-            return hashDate ^ hashClientName ^ hashInvoiceReference ^ hashInvoiceAmount ^ hashDescription;
+            return hashDate ^ hashClientName ^ hashInvoiceReference ^ hashAmount ^ hashDescription;
         }
     }
 }
