@@ -24,9 +24,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Bankmetadata.Tests.CS", "Plutus.Bankmetadata\Plutus.Bankmetadata.Tests.CS\Plutus.Bankmetadata.Tests.CS.csproj", "{AAAEE8DE-5A72-437B-A5E3-5F4F038F7004}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Expense", "Plutus.Expense", "{64CB6046-180C-492C-B398-ECD582AC007E}"
-	ProjectSection(SolutionItems) = preProject
-		Plutus.Bankmetadata\Plutus.Bankmetadata.Data.FileSystem.CS\appsettings.json = Plutus.Bankmetadata\Plutus.Bankmetadata.Data.FileSystem.CS\appsettings.json
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expense.Data.FileSystem.CS", "Plutus.Expense\Plutus.Expense.Data.FileSystem.CS\Plutus.Expense.Data.FileSystem.CS.csproj", "{0548022D-B966-44D6-A223-D2AF7BD17B0C}"
 EndProject
@@ -35,10 +32,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expense.Tests.CS", "Plutus.Expense\Plutus.Expense.Tests.CS\Plutus.Expense.Tests.CS.csproj", "{7C2367DF-A6A9-462A-B9D2-379240AF4C2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Invoice", "Plutus.Invoice", "{DF2573A5-DF8F-4D65-872A-2BF231EE1CA6}"
-	ProjectSection(SolutionItems) = preProject
-		Plutus.Bankmetadata\Plutus.Bankmetadata.Data.FileSystem.CS\appsettings.json = Plutus.Bankmetadata\Plutus.Bankmetadata.Data.FileSystem.CS\appsettings.json
-		Plutus.Expense\Plutus.Expense.Data.FileSystem.CS\nlog.config = Plutus.Expense\Plutus.Expense.Data.FileSystem.CS\nlog.config
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Invoice.Data.FileSystem.CS", "Plutus.Invoice\Plutus.Invoice.Data.FileSystem.CS\Plutus.Invoice.Data.FileSystem.CS.csproj", "{612CE474-C4F1-4762-BD5B-90500BBEE3C9}"
 EndProject
