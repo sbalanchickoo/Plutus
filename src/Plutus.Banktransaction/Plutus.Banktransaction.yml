@@ -27,11 +27,11 @@ build:
 # create deployment package
 after_build:
 - ps: msbuild.exe "Plutus.Banktransaction.Service.API/Plutus.Banktransaction.Service.API.csproj" /p:DeployOnBuild=true  /p:PublishProfile=FolderProfile /verbosity:quiet
-- 7z a Plutus.Banktransaction.IISHost.zip .\Plutus.Banktransaction.Service.API\bin\Release\Publish\*
+- 7z a Plutus.Banktransaction.zip .\Plutus.Banktransaction.Service.API\bin\Release\Publish\*
 
 # artifacts configuration 
 artifacts:
-- path: src\Plutus.Banktransaction\Plutus.Banktransaction.IISHost.zip
+- path: src\Plutus.Banktransaction\Plutus.Banktransaction.zip
 
 # deployment
 deploy:
