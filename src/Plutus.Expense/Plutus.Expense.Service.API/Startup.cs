@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
+using Plutus.Expenses.Data.FileSystem.CS.Models;
+using Plutus.SharedLibrary.CS.Interfaces;
 
-namespace Plutus.Expense.Service.API
+namespace Plutus.Expenses.Service.API
 {
     /// <summary>
     /// Entry startup class
@@ -29,7 +33,15 @@ namespace Plutus.Expense.Service.API
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddXmlSerializerFormatters()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                });
+            services.AddApiVersioning(o => o.ApiVersionReader = new HeaderApiVersionReader("api-version"));
+            services.AddScoped<IExpense, ExpensesRepo>();
         }
 
         /// <summary>

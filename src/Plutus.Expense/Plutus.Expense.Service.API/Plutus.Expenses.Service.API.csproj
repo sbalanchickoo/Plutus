@@ -5,12 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.1\Plutus.Invoice.Service.API.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp2.1\Plutus.Expense.Service.API.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
   <ItemGroup>
     <Content Remove="nlog.config" />
   </ItemGroup>
@@ -36,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Plutus.Invoice.Data.FileSystem.CS\Plutus.Invoice.Data.FileSystem.CS.csproj" />
+    <ProjectReference Include="..\Plutus.Expense.Data.FileSystem.CS\Plutus.Expenses.Data.FileSystem.CS.csproj" />
   </ItemGroup>
 
 </Project>

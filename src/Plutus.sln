@@ -23,13 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Bankmetadata.Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Bankmetadata.Tests.CS", "Plutus.Bankmetadata\Plutus.Bankmetadata.Tests.CS\Plutus.Bankmetadata.Tests.CS.csproj", "{AAAEE8DE-5A72-437B-A5E3-5F4F038F7004}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Expense", "Plutus.Expense", "{64CB6046-180C-492C-B398-ECD582AC007E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Expenses", "Plutus.Expenses", "{64CB6046-180C-492C-B398-ECD582AC007E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expense.Data.FileSystem.CS", "Plutus.Expense\Plutus.Expense.Data.FileSystem.CS\Plutus.Expense.Data.FileSystem.CS.csproj", "{0548022D-B966-44D6-A223-D2AF7BD17B0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expenses.Data.FileSystem.CS", "Plutus.Expense\Plutus.Expense.Data.FileSystem.CS\Plutus.Expenses.Data.FileSystem.CS.csproj", "{0548022D-B966-44D6-A223-D2AF7BD17B0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expense.Service.API", "Plutus.Expense\Plutus.Expense.Service.API\Plutus.Expense.Service.API.csproj", "{E7E8EEC8-0D12-4E12-B1BE-5A59E62DD9B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expenses.Service.API", "Plutus.Expense\Plutus.Expense.Service.API\Plutus.Expenses.Service.API.csproj", "{E7E8EEC8-0D12-4E12-B1BE-5A59E62DD9B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expense.Tests.CS", "Plutus.Expense\Plutus.Expense.Tests.CS\Plutus.Expense.Tests.CS.csproj", "{7C2367DF-A6A9-462A-B9D2-379240AF4C2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expenses.Tests.CS", "Plutus.Expense\Plutus.Expense.Tests.CS\Plutus.Expenses.Tests.CS.csproj", "{7C2367DF-A6A9-462A-B9D2-379240AF4C2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Invoice", "Plutus.Invoice", "{DF2573A5-DF8F-4D65-872A-2BF231EE1CA6}"
 EndProject

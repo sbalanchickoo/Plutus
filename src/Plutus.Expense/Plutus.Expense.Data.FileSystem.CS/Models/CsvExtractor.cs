@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using CsvHelper;
 
-namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
+namespace Plutus.Expenses.Data.FileSystem.CS.Models
 {
     /// <summary>
-    /// Helper class to extract BankTransaction from Ofx
+    /// Helper class to extract Expenses from CSV
     /// </summary>
     public class CsvExtractor
     {
@@ -35,37 +35,34 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         }
 
         /// <summary>
-        /// Controller method, takes in CSV string and returns IEnumerable
+        /// Controller method, takes in CSV string and returns IEnumerable of Expense
         /// </summary>
-        public IEnumerable<BankMetadata> ExtractBankMetadataFromCsvString(string csvContent)
+        public IEnumerable<Expense> ExtractExpensesFromCsvString(string csvContent)
         {
-            List<BankMetadata> txnList = new List<BankMetadata>();
+            List<Expense> txnList = new List<Expense>();
             try
             {
                 var csv = new CsvReader(new StringReader(csvContent));
                 csv.Configuration.Delimiter = Delimiter;
                 var anonymousTypeDefinition = new
                 {
-                    date = string.Empty,
-                    bankdescription = string.Empty,
-                    accountnumber = string.Empty,
+                    DATE = string.Empty,
                     employeename = string.Empty,
                     description = string.Empty,
-                    usercomments = string.Empty,
-                    amount = string.Empty,
-                    net = string.Empty,
+                    detail = string.Empty,
+                    total = string.Empty,
                     vat = string.Empty,
+                    net = string.Empty
                 };
                 var txnListInput = csv.GetRecords(anonymousTypeDefinition);
                 foreach (var input in txnListInput)
                 {
-                    BankMetadata row = new BankMetadata
+                    Expense row = new Expense
                     {
-                        Amount = Convert.ToDecimal(input.amount),
-                        Merchant = input.bankdescription,
-                        Date = Convert.ToDateTime(input.date),
-                        UserComments = input.usercomments,
-                        TransactionCategory = input.description
+                        Date = Convert.ToDateTime(input.DATE),
+                        Amount = Convert.ToDecimal(input.total),
+                        TransactionCategory = input.description,
+                        Description = input.detail
                     };
                     txnList.Add(row);
                 }

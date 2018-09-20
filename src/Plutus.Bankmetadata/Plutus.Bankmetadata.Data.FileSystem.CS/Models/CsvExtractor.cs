@@ -7,7 +7,7 @@ using CsvHelper;
 namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
 {
     /// <summary>
-    /// Helper class to extract BankTransaction from Ofx
+    /// Helper class to extract BankMetadata from CSV
     /// </summary>
     public class CsvExtractor
     {
@@ -35,7 +35,7 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         }
 
         /// <summary>
-        /// Controller method, takes in CSV string and returns IEnumerable
+        /// Controller method, takes in CSV string and returns IEnumerable of BankMetadata
         /// </summary>
         public IEnumerable<BankMetadata> ExtractBankMetadataFromCsvString(string csvContent)
         {

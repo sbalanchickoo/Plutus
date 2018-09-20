@@ -8,13 +8,13 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using NLog;
 
-namespace Plutus.Expense.Data.FileSystem.CS.Models
+namespace Plutus.Expenses.Data.FileSystem.CS.Models
 {
     /// <summary>
     /// This class is a local file-system-based repository of Expense data ...
     /// These are obtained from CSV files
     /// </summary>
-    public class ExpenseRepo : IExpense
+    public class ExpensesRepo : IExpense
     {
         private bool _isDirty;
         private FileSystemWatcher _watcher;
@@ -149,7 +149,7 @@ namespace Plutus.Expense.Data.FileSystem.CS.Models
         /// ... scanning directory, and Metadatas in them, adding them to repository, ...
         /// ... and initializing watcher method based on directory size
         /// </summary>
-        public ExpenseRepo()
+        public ExpensesRepo()
         {
             _ExpenseList = new List<Expense>();
             _isDirty = true;
@@ -177,13 +177,13 @@ namespace Plutus.Expense.Data.FileSystem.CS.Models
         /// <summary>
         /// Get Bank Metadatas from xml string
         /// </summary>
-        public IEnumerable<Expense> ExtractExpenseFromCsv(string content)
+        public IEnumerable<Expense> ExtractExpensesFromCsv(string content)
         {
             IEnumerable<Expense> txnList = new List<Expense>();
             try
             {
                 CsvExtractor csvExtractor = new CsvExtractor();
-                txnList = csvExtractor.ExtractExpenseFromCsvString(content);
+                txnList = csvExtractor.ExtractExpensesFromCsvString(content);
                 ClassLogger.Info("File Csv parsed");
                 ClassLogger.Info("Metadata read from files");
             }
@@ -243,7 +243,7 @@ namespace Plutus.Expense.Data.FileSystem.CS.Models
         /// Returns distinct list of all Bank Metadatas contained within files in a folder, ...
         /// return from local list if still valid or scan afresh if repository is marked dirty
         /// </summary>
-        public IEnumerable<Expense> GetExpense()
+        public IEnumerable<Expense> GetExpenses()
         {
             if (_isDirty)
             {
@@ -258,7 +258,7 @@ namespace Plutus.Expense.Data.FileSystem.CS.Models
                     {
                         List<Expense> MetadataList = new List<Expense>();
                         string fileContent = ExtractCsvFileContent(file.FileName);
-                        MetadataList = ExtractExpenseFromCsv(fileContent).ToList();
+                        MetadataList = ExtractExpensesFromCsv(fileContent).ToList();
                         ClassLogger.Info($"Metadata found: [{MetadataList.Count}]");
                         Metadatalists.Add(MetadataList);
                     }
