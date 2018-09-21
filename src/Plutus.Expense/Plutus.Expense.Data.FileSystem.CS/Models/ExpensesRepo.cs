@@ -205,7 +205,7 @@ namespace Plutus.Expenses.Data.FileSystem.CS.Models
         /// For each Expense FileType in FileList list, send path to GetFileExpenses ...
         /// ... and for each Metadata, add to repository list if not already present
         /// </summary>
-        public IEnumerable<Expense> ConsolidateMetadataFromLists(IEnumerable<IEnumerable<Expense>> MetadataLists)
+        public IEnumerable<Expense> ConsolidateExpensesFromLists(IEnumerable<IEnumerable<Expense>> MetadataLists)
         {
             List<Expense> txnList = new List<Expense>();
             foreach (var MetadataList in MetadataLists)
@@ -265,7 +265,7 @@ namespace Plutus.Expenses.Data.FileSystem.CS.Models
                     ClassLogger.Info($"Finished reading File: [{file.FileName}]");
                 }
                 List<Expense> consolidatedExpenseList = new List<Expense>();
-                consolidatedExpenseList = ConsolidateMetadataFromLists(Metadatalists).ToList();
+                consolidatedExpenseList = ConsolidateExpensesFromLists(Metadatalists).ToList();
                 _ExpenseList = consolidatedExpenseList;
                 ClassLogger.Info("Repository repopulation complete");
                 _isDirty = false;

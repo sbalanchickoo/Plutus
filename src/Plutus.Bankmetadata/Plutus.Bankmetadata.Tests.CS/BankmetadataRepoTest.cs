@@ -16,6 +16,65 @@ namespace Plutus.Bankmetadata.Tests.CS
     [TestClass]
     public class BankmetadataRepoTest
     {
+        private List<BankMetadata> _bankMetadataList1 = new List<BankMetadata>();
+        private List<BankMetadata> _bankMetadataList2 = new List<BankMetadata>();
+        private List<BankMetadata> _bankMetadataList3 = new List<BankMetadata>();
+        private List<BankMetadata> _bankMetadataList4 = new List<BankMetadata>();
+
+        /// <summary>
+        /// Initialize test, setup fake lists
+        /// </summary>
+        [TestInitialize]
+        public void Setup()
+        {
+            BankMetadata bankMetadata1 = new BankMetadata
+            {
+                Date = Convert.ToDateTime("2010-01-01"),
+                Amount = 100.00M,
+                UserComments = "Comment 1",
+                Merchant = "Payee 1",
+                TransactionCategory = "Money Received from Employee"
+            };
+            BankMetadata bankMetadata2 = new BankMetadata
+            {
+                Date = Convert.ToDateTime("2011-01-01"),
+                Amount = 500.00M,
+                UserComments = "Comment, 2",
+                Merchant = "Payee 2",
+                TransactionCategory = "Cash received from clients"
+            };
+            BankMetadata bankMetadata3 = new BankMetadata
+            {
+                Date = Convert.ToDateTime("2011-01-01"),
+                Amount = 500.00M,
+                UserComments = "Comment, 2",
+                Merchant = "Payee 3",
+                TransactionCategory = "Cash received from clients"
+            };
+            BankMetadata bankMetadata4 = new BankMetadata
+            {
+                Date = Convert.ToDateTime("2013-01-01"),
+                Amount = 500.00M,
+                UserComments = "Comment, 2",
+                Merchant = "Payee 4",
+                TransactionCategory = "Cash received from clients"
+            };
+            _bankMetadataList1.Add(bankMetadata1);
+            _bankMetadataList1.Add(bankMetadata2);
+
+            _bankMetadataList2.Add(bankMetadata2);
+            _bankMetadataList2.Add(bankMetadata3);
+
+            _bankMetadataList3.Add(bankMetadata1);
+            _bankMetadataList3.Add(bankMetadata2);
+            _bankMetadataList3.Add(bankMetadata3);
+
+            _bankMetadataList4.Add(bankMetadata1);
+            _bankMetadataList4.Add(bankMetadata2);
+            _bankMetadataList4.Add(bankMetadata3);
+            _bankMetadataList4.Add(bankMetadata4);
+        }
+
         /// <summary>
         /// Happy path for the GetSourceDetails method
         /// </summary>
@@ -54,7 +113,7 @@ namespace Plutus.Bankmetadata.Tests.CS
         }
 
         /// <summary>
-        /// Failure path for the ExtractBankTransactionsFromOfx method - Bad input CSV, return empty list
+        /// Failure path for the ExtractBankMetadataFromCsv method - Bad input CSV, return empty list
         /// </summary>
         [TestMethod]
         public void ExtractBankMetadataFromCsv_OnInvalidCsv_ReturnEmptyTxnList()
@@ -65,11 +124,7 @@ namespace Plutus.Bankmetadata.Tests.CS
 
             //Act
             BankmetadataRepo repo = new BankmetadataRepo();
-            List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsv(input1)
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
+            List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsv(input1).ToList();
 
             //Assert
             Assert.AreEqual(0, output1.Count);
@@ -77,217 +132,54 @@ namespace Plutus.Bankmetadata.Tests.CS
         }
 
         /// <summary>
-        /// Happy path for the ExtractBankTransactionsFromOfx method
+        /// Happy path for the GetBankMetadata method
         /// </summary>
         [TestMethod]
-        public void ExtractBankMetadataFromCsv_OnValidInputs_ReturnTxnList()
+        public void GetBankMetadata_OnValidInputs_ReturnMetadataList()
         {
             //Arrange
-            List<BankMetadata> txnList = new List<BankMetadata>
-            {
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2010-01-01"),
-                    Amount = 100.00M,
-                    UserComments = "Comment 1",
-                    Merchant = "Payee 1",
-                    TransactionCategory = "Money Received from Employee"
-                },
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 2",
-                    TransactionCategory = "Cash received from clients"
-                }
-                ,
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 3",
-                    TransactionCategory = "Cash received from clients"
-                }
-            }
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
-
+            
             //Act
             BankmetadataRepo repo = new BankmetadataRepo
             {
                 FolderName = @"..\..\..\TestFiles2"
             };
-            List<BankMetadata> output1 = repo.GetBankMetadata()
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
+            List<BankMetadata> output1 = repo.GetBankMetadata().ToList();
 
             //Assert
-            Assert.AreEqual(3, output1.Count);
-            CollectionAssert.AreEqual(txnList, output1, new BankMetadataComparer());
+            Assert.AreEqual(_bankMetadataList3.Count, output1.Count);
+            CollectionAssert.AreEqual(_bankMetadataList3, output1, new BankMetadataComparer());
         }
 
         /// <summary>
-        /// Happy path for the ConsolidateTransactionsFromLists method
+        /// Happy path for the ConsolidateMetadataFromLists method
         /// </summary>
         [TestMethod]
-        public void ConsolidateMetadataFromLists_OnExecute_ReturnConsolidatedTxnList()
+        public void ConsolidateMetadataFromLists_OnExecute_ReturnConsolidatedMetadataList()
         {
             //Arrange
-            List<BankMetadata> txnListConsolidated = new List<BankMetadata>
-            {
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2010-01-01"),
-                    Amount = 100.00M,
-                    UserComments = "Comment 1",
-                    Merchant = "Payee 1",
-                    TransactionCategory = "Money Received from Employee"
-                },
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 2",
-                    TransactionCategory = "Cash received from clients"
-                }
-                ,
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 3",
-                    TransactionCategory = "Cash received from clients"
-                }
-            }
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
-
-            List<BankMetadata> txnList1 = new List<BankMetadata>
-            {
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2010-01-01"),
-                    Amount = 100.00M,
-                    UserComments = "Comment 1",
-                    Merchant = "Payee 1",
-                    TransactionCategory = "Money Received from Employee"
-                },
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 2",
-                    TransactionCategory = "Cash received from clients"
-                }
-            }
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
-
-            List<BankMetadata> txnList2 = new List<BankMetadata>
-            {
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 2",
-                    TransactionCategory = "Cash received from clients"
-                }
-                ,
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 3",
-                    TransactionCategory = "Cash received from clients"
-                }
-            }
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
-
             List<List<BankMetadata>> txnInput = new List<List<BankMetadata>>
             {
-                txnList1,
-                txnList2
+                _bankMetadataList1,
+                _bankMetadataList2
             };
 
             //Act
             BankmetadataRepo repo = new BankmetadataRepo();
-            List<BankMetadata> output1 = repo.ConsolidateMetadataFromLists(txnInput)
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
+            List<BankMetadata> output1 = repo.ConsolidateMetadataFromLists(txnInput).ToList();
 
             //Assert
-            Assert.AreEqual(3, output1.Count);
-            CollectionAssert.AreEqual(txnListConsolidated, output1, new BankMetadataComparer());
+            Assert.AreEqual(_bankMetadataList3.Count, output1.Count);
+            CollectionAssert.AreEqual(_bankMetadataList3, output1, new BankMetadataComparer());
         }
 
         /// <summary>
-        /// Test for the GetBankTransactions - Folder change functionality
+        /// Test for the GetBankMetadata - Folder change functionality
         /// </summary>
         [TestMethod]
         public void GetBankMetadata_OnFolderChange_ReturnTxnList()
         {
             //Arrange
-            List<BankMetadata> txnList = new List<BankMetadata>
-            {
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2010-01-01"),
-                    Amount = 100.00M,
-                    UserComments = "Comment 1",
-                    Merchant = "Payee 1",
-                    TransactionCategory = "Money Received from Employee"
-                },
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 2",
-                    TransactionCategory = "Cash received from clients"
-                }
-                ,
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 3",
-                    TransactionCategory = "Cash received from clients"
-                }
-                ,
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2013-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 4",
-                    TransactionCategory = "Cash received from clients"
-                }
-            }
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
             File.Delete(@"..\..\..\TestFiles3\ban_Valid_3.CSV");
 
             //Act
@@ -295,22 +187,14 @@ namespace Plutus.Bankmetadata.Tests.CS
             {
                 FolderName = @"..\..\..\TestFiles3"
             };
-            List<BankMetadata> output1 = repo.GetBankMetadata()
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
+            List<BankMetadata> output1 = repo.GetBankMetadata().ToList();
             File.Copy(@"..\..\..\TestFiles1\ban_Valid_3.CSV", @"..\..\..\TestFiles3\ban_Valid_3.CSV");
             System.Threading.Thread.Sleep(5000);
-            output1 = repo.GetBankMetadata()
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
+            output1 = repo.GetBankMetadata().ToList();
 
             //Assert
-            Assert.AreEqual(4, output1.Count);
-            CollectionAssert.AreEqual(txnList, output1, new BankMetadataComparer());
+            Assert.AreEqual(_bankMetadataList4.Count, output1.Count);
+            CollectionAssert.AreEqual(_bankMetadataList4, output1, new BankMetadataComparer());
         }
     }
 }

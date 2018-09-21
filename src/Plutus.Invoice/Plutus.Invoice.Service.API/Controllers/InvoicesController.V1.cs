@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Plutus.SharedLibrary.CS.Interfaces;
 using Plutus.SharedLibrary.CS.Models;
 
-namespace Plutus.Bankmetadata.Service.API.Controllers.V1
+namespace Plutus.Invoices.Service.API.Controllers.V1
 {
     /// <summary>
     /// Central controller for bank metadata
@@ -13,19 +13,19 @@ namespace Plutus.Bankmetadata.Service.API.Controllers.V1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [FormatFilter]
-    public class BankmetadataController : Controller
+    public class InvoicesController : Controller
     {
-        IBankMetadata _repo;
-        private readonly ILogger<BankmetadataController> _logger;
+        IInvoice _repo;
+        private readonly ILogger<InvoicesController> _logger;
 
         /// <summary>
         /// Primary constructor with DI for Logging and Repository
         /// </summary>
-        public BankmetadataController(IBankMetadata repo, ILogger<BankmetadataController> logger)
+        public InvoicesController(IInvoice repo, ILogger<InvoicesController> logger)
         {
             _repo = repo;
             _logger = logger;
-            _logger.LogInformation(200, "BankmetadataController invoked");
+            _logger.LogInformation(200, "InvoicesController invoked");
         }
 
         /// <summary>
@@ -47,12 +47,12 @@ namespace Plutus.Bankmetadata.Service.API.Controllers.V1
         [Route("[action]/{format?}")]
         [Route("[action]")]
         [Route("")]
-        public IActionResult BankMetadata()
+        public IActionResult Invoices()
         {
-            List<BankMetadata> txns = new List<BankMetadata>();
-            txns = _repo.GetBankMetadata().ToList();
+            List<Invoice> txns = new List<Invoice>();
+            txns = _repo.GetInvoices().ToList();
             var result = txns;
-            _logger.LogInformation(200, "BankMetadata request complete");
+            _logger.LogInformation(200, "Invoices request complete");
             return Ok(result);
         }
     }

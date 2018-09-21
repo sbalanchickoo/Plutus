@@ -21,50 +21,44 @@ namespace Plutus.Bankmetadata.Tests.CS
     {
         private IBankMetadata _repo;
         private ILogger<BankmetadataController> _logger;
-
-        List<BankMetadata> txnList = new List<BankMetadata>();
-
+        private List<BankMetadata> _bankMetadataList1 = new List<BankMetadata>();
+        
         /// <summary>
         /// Initial setup, create Source List, Moq repo object
         /// </summary>
         [TestInitialize]
         public void Setup()
         {
-            txnList = new List<BankMetadata>
+            BankMetadata b1 = new BankMetadata
             {
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2010-01-01"),
-                    Amount = 100.00M,
-                    UserComments = "Comment 1",
-                    Merchant = "Payee 1",
-                    TransactionCategory = "Money Received from Employee"
-                },
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 2",
-                    TransactionCategory = "Cash received from clients"
-                }
-                ,
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 3",
-                    TransactionCategory = "Cash received from clients"
-                }
-            }
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
+                Date = Convert.ToDateTime("2010-01-01"),
+                Amount = 100.00M,
+                UserComments = "Comment 1",
+                Merchant = "Payee 1",
+                TransactionCategory = "Money Received from Employee"
+            };
+            BankMetadata b2 = new BankMetadata
+            {
+                Date = Convert.ToDateTime("2011-01-01"),
+                Amount = 500.00M,
+                UserComments = "Comment, 2",
+                Merchant = "Payee 2",
+                TransactionCategory = "Cash received from clients"
+            };
+            BankMetadata b3 = new BankMetadata
+            {
+                Date = Convert.ToDateTime("2011-01-01"),
+                Amount = 500.00M,
+                UserComments = "Comment, 2",
+                Merchant = "Payee 3",
+                TransactionCategory = "Cash received from clients"
+            };
+            _bankMetadataList1.Add(b1);
+            _bankMetadataList1.Add(b2);
+            _bankMetadataList1.Add(b3);
 
             var repositoryMock = new Mock<IBankMetadata>();
-            repositoryMock.Setup(r => r.GetBankMetadata()).Returns(txnList);
+            repositoryMock.Setup(r => r.GetBankMetadata()).Returns(_bankMetadataList1);
             InputDataSource inputSource = new InputDataSource
             {
                 InputDataSourceType = DataSource.FileSystem,
@@ -114,7 +108,7 @@ namespace Plutus.Bankmetadata.Tests.CS
         }
 
         /// <summary>
-        /// Happy path for the BankTransactions action - type
+        /// Happy path for the BankMetadata action - type
         /// </summary>
         [TestMethod]
         public void BankMetadata_OnExecute_ReturnBankMetadataType()
@@ -131,7 +125,7 @@ namespace Plutus.Bankmetadata.Tests.CS
         }
 
         /// <summary>
-        /// Happy path for the BankTransactions action - content
+        /// Happy path for the BankMetadata action - content
         /// </summary>
         [TestMethod]
         public void BankMetadata_OnExecute_ReturnBankMetadata()

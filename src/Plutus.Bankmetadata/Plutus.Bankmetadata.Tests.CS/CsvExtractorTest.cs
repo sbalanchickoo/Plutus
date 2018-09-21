@@ -15,7 +15,7 @@ namespace Plutus.Bankmetadata.Tests.CS
     [TestClass]
     public class CsvExtractorTest
     {
-        List<BankMetadata> txnList = new List<BankMetadata>();
+        private List<BankMetadata> _bankMetadataList1 = new List<BankMetadata>();
 
         /// <summary>
         /// Test initialization step, List of fake data
@@ -23,51 +23,41 @@ namespace Plutus.Bankmetadata.Tests.CS
         [TestInitialize]
         public void Setup()
         {
-            txnList = new List<BankMetadata>
+            BankMetadata bankMetadata1 = new BankMetadata
             {
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2010-01-01"),
-                    Amount = 100.00M,
-                    UserComments = "Comment 1",
-                    Merchant = "Payee 1",
-                    TransactionCategory = "Money Received from Employee"
-                },
-                new BankMetadata
-                {
-                    Date = Convert.ToDateTime("2011-01-01"),
-                    Amount = 500.00M,
-                    UserComments = "Comment, 2",
-                    Merchant = "Payee 2",
-                    TransactionCategory = "Cash received from clients"
-                }
-            }
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
-
+                Date = Convert.ToDateTime("2010-01-01"),
+                Amount = 100.00M,
+                UserComments = "Comment 1",
+                Merchant = "Payee 1",
+                TransactionCategory = "Money Received from Employee"
+            };
+            BankMetadata bankMetadata2 = new BankMetadata
+            {
+                Date = Convert.ToDateTime("2011-01-01"),
+                Amount = 500.00M,
+                UserComments = "Comment, 2",
+                Merchant = "Payee 2",
+                TransactionCategory = "Cash received from clients"
+            };
+            _bankMetadataList1.Add(bankMetadata1);
+            _bankMetadataList1.Add(bankMetadata2);
         }
 
         /// <summary>
-        /// Happy path for the ExtractBankMetadatasFromCsv method
+        /// Happy path for the ExtractBankMetadataFromCsv method
         /// </summary>
         [TestMethod]
-        public void ExtractBankMetadatasFromCsv_OnValidCsv_ReturnMetadataList()
+        public void ExtractBankMetadataFromCsv_OnValidCsv_ReturnMetadataList()
         {
             //Arrange
             string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Valid_1.CSV");
             
             //Act
             CsvExtractor repo = new CsvExtractor();
-            List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsvString(input1)
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
+            List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsvString(input1).ToList();
 
             //Assert
-            CollectionAssert.AreEqual(txnList, output1, new BankMetadataComparer());
+            CollectionAssert.AreEqual(_bankMetadataList1, output1, new BankMetadataComparer());
         }
 
         /// <summary>
@@ -82,11 +72,7 @@ namespace Plutus.Bankmetadata.Tests.CS
             CsvExtractor repo = new CsvExtractor();
 
             //Act, Assert
-            List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsvString(input1)
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList();
+            List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsvString(input1).ToList();
         }
 
         /// <summary>
@@ -102,11 +88,7 @@ namespace Plutus.Bankmetadata.Tests.CS
             //Act
             try
             {
-                List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsvString(input1)
-                .OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.Merchant)
-                .ToList(); ;
+                List<BankMetadata> output1 = repo.ExtractBankMetadataFromCsvString(input1).ToList();
             }
 
             //Assert

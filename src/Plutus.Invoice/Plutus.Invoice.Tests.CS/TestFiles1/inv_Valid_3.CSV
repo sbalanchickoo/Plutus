@@ -1,0 +1,5 @@
+"date","description","clientname","invoiceref","total","vat","net",
+"2010-01-01","Description 1","Client 1","Invoice Ref 1","100.00","0.00","20.00",
+"2011-01-01","Description 2","Client 2","Invoice Ref 2","200.00","0.00","40.00",
+"2012-01-01","Description 3","Client 2","Invoice Ref 3","300.00","0.00","60.00",
+"2012-01-01","Description 3","Client 3","Invoice Ref 3","400.00","0.00","80.00",

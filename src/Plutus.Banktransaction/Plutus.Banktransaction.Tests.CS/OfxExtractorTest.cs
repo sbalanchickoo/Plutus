@@ -15,6 +15,24 @@ namespace Plutus.Banktransaction.Tests.CS
     [TestClass]
     public class OfxExtractorTest
     {
+        private List<BankTransaction> _bankTransactionList1 = new List<BankTransaction>();
+
+        /// <summary>
+        /// Test initialization step, List of fake data
+        /// </summary>
+        [TestInitialize]
+        public void Setup()
+        {
+            BankTransaction bankTransaction1 = new BankTransaction
+            {
+                FITID = "91234567800",
+                Merchant = "R/P to John Doe",
+                Amount = -500.50M,
+                Date = Convert.ToDateTime("2011-12-30")
+            };
+            _bankTransactionList1.Add(bankTransaction1);
+        }
+
         /// <summary>
         /// Happy path for the ExtractXmlFromOfx method
         /// </summary>
@@ -79,23 +97,13 @@ namespace Plutus.Banktransaction.Tests.CS
         {
             //Arrange
             string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Xml_Valid_1.XML");
-            List<BankTransaction> txnList = new List<BankTransaction>
-            {
-                new BankTransaction
-                {
-                    FITID = "91234567800",
-                    Merchant = "R/P to John Doe",
-                    Amount = -500.50M,
-                    Date = Convert.ToDateTime("2011-12-30")
-                }
-            }.OrderBy(txn => txn.FITID).ToList();
-
+            
             //Act
             OfxExtractor repo = new OfxExtractor();
-            List<BankTransaction> output1 = repo.ExtractBankTransactionsFromXml(input1).OrderBy(txn => txn.FITID).ToList();
+            List<BankTransaction> output1 = repo.ExtractBankTransactionsFromXml(input1).ToList();
 
             //Assert
-            CollectionAssert.AreEqual(txnList, output1, new BankTransactionComparer());
+            CollectionAssert.AreEqual(_bankTransactionList1, output1, new BankTransactionComparer());
         }
 
         /// <summary>
@@ -107,11 +115,11 @@ namespace Plutus.Banktransaction.Tests.CS
         {
             //Arrange
             string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Xml_Invalid_1.XML");
-            List<BankTransaction> txnList = new List<BankTransaction>().OrderBy(txn => txn.FITID).ToList();
+            List<BankTransaction> txnList = new List<BankTransaction>();
             OfxExtractor repo = new OfxExtractor();
 
             //Act
-            List<BankTransaction> output1 = repo.ExtractBankTransactionsFromXml(input1).OrderBy(txn => txn.FITID).ToList();
+            List<BankTransaction> output1 = repo.ExtractBankTransactionsFromXml(input1).ToList();
         }
 
         /// <summary>
@@ -127,7 +135,7 @@ namespace Plutus.Banktransaction.Tests.CS
             //Act
             try
             {
-                List<BankTransaction> output1 = repo.ExtractBankTransactionsFromXml(input1).OrderBy(txn => txn.FITID).ToList();
+                List<BankTransaction> output1 = repo.ExtractBankTransactionsFromXml(input1).ToList();
             }
 
             //Assert

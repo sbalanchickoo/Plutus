@@ -1,13 +1,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Plutus.Expenses.Data.FileSystem.CS.Models;
-using Plutus.Expenses.Tests.CS.EqualityComparers;
+using Plutus.Invoices.Data.FileSystem.CS.Models;
+using Plutus.Invoices.Tests.CS.EqualityComparers;
 using Plutus.SharedLibrary.CS.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Plutus.Expenses.Tests.CS
+namespace Plutus.Invoices.Tests.CS
 {
     /// <summary>
     /// Test class to test methods in CsvExtractor class
@@ -15,7 +15,7 @@ namespace Plutus.Expenses.Tests.CS
     [TestClass]
     public class CsvExtractorTest
     {
-        private List<Expense> _expList1 = new List<Expense>();
+        private List<Invoice> _invList1 = new List<Invoice>();
 
         /// <summary>
         /// Test initialization step, List of fake data
@@ -23,61 +23,63 @@ namespace Plutus.Expenses.Tests.CS
         [TestInitialize]
         public void Setup()
         {
-            Expense exp1 = new Expense
+            Invoice inv1 = new Invoice
             {
                 Date = Convert.ToDateTime("2010-01-01"),
                 Amount = 100.00M,
-                TransactionCategory = "Category 1",
-                Description = "Payee 1"
+                ClientName = "Client 1",
+                InvoiceReference = "Invoice Ref 1",
+                Description = "Description 1"
             };
-            Expense exp2 = new Expense
+            Invoice inv2 = new Invoice
             {
                 Date = Convert.ToDateTime("2011-01-01"),
                 Amount = 200.00M,
-                TransactionCategory = "Category 2",
-                Description = "Payee 2"
+                ClientName = "Client 2",
+                InvoiceReference = "Invoice Ref 2",
+                Description = "Description 2"
             };
-            _expList1.Add(exp1);
-            _expList1.Add(exp2);
+            _invList1.Add(inv1);
+            _invList1.Add(inv2);
         }
 
         /// <summary>
-        /// Happy path for the ExtractExpensesFromCsv method
+        /// Happy path for the ExtractInvoicesFromCsv method
         /// </summary>
         [TestMethod]
-        public void ExtractExpensesFromCsv_OnValidCsv_ReturnExpensesList()
+        public void ExtractInvoicesFromCsv_OnValidCsv_ReturnInvoicesList()
         {
             //Arrange
             string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Valid_1.CSV");
-            
+
             //Act
             CsvExtractor repo = new CsvExtractor();
-            List<Expense> output1 = repo.ExtractExpensesFromCsvString(input1).ToList();
+            List<Invoice> output1 = repo.ExtractInvoicesFromCsvString(input1).ToList();
 
             //Assert
-            CollectionAssert.AreEqual(_expList1, output1, new ExpenseComparer());
+            CollectionAssert.AreEqual(_invList1, output1, new InvoicesComparer());
         }
 
         /// <summary>
-        /// Exception test for the ExtractExpensesFromCsv method
+        /// Exception test for the ExtractInvoicesFromCsv method
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(FieldAccessException))]
-        public void ExtractExpensesFromCsv_OnInvalidCsv_ThrowException()
+        public void ExtractInvoicesFromCsv_OnInvalidCsv_ThrowException()
         {
             //Arrange
             string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Invalid_1.CSV");
             CsvExtractor repo = new CsvExtractor();
 
             //Act, Assert
-            List<Expense> output1 = repo.ExtractExpensesFromCsvString(input1).ToList();
+            List<Invoice> output1 = repo.ExtractInvoicesFromCsvString(input1).ToList();
         }
 
         /// <summary>
-        /// Exception message test for the ExtractExpensesFromCsv method
+        /// Exception message test for the ExtractInvoicesFromCsv method
         /// </summary>
         [TestMethod]
-        public void ExtractExpensesFromCsv_OnInvalidXml_ThrowCorrectExceptionMessage()
+        public void ExtractInvoicesFromCsv_OnInvalidXml_ThrowCorrectExceptionMessage()
         {
             //Arrange
             string input1 = File.ReadAllText(@"..\..\..\TestFiles1\Csv_Invalid_1.CSV");
@@ -86,7 +88,7 @@ namespace Plutus.Expenses.Tests.CS
             //Act
             try
             {
-                List<Expense> output1 = repo.ExtractExpensesFromCsvString(input1).ToList();
+                List<Invoice> output1 = repo.ExtractInvoicesFromCsvString(input1).ToList();
             }
 
             //Assert

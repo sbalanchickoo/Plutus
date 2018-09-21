@@ -16,6 +16,61 @@ namespace Plutus.Banktransaction.Tests.CS
     [TestClass]
     public class BanktransactionRepoTest
     {
+        private List<BankTransaction> _bankTransactionList1 = new List<BankTransaction>();
+        private List<BankTransaction> _bankTransactionList2 = new List<BankTransaction>();
+        private List<BankTransaction> _bankTransactionList3 = new List<BankTransaction>();
+        private List<BankTransaction> _bankTransactionList4 = new List<BankTransaction>();
+
+        /// <summary>
+        /// Initialize test, setup fake lists
+        /// </summary>
+        [TestInitialize]
+        public void Setup()
+        {
+            BankTransaction bankTransaction1 = new BankTransaction
+            {
+                FITID = "91234567800",
+                Merchant = "R/P to John Doe",
+                Amount = -500.50M,
+                Date = Convert.ToDateTime("2011-12-30")
+            };
+            BankTransaction bankTransaction2 = new BankTransaction
+            {
+                FITID = "91234567801",
+                Merchant = "R/P to Jane Doe",
+                Amount = -1000.50M,
+                Date = Convert.ToDateTime("2011-12-31")
+            };
+            BankTransaction bankTransaction3 = new BankTransaction
+            {
+                FITID = "91234567802",
+                Merchant = "R/P to Jack Doe",
+                Amount = -1500.50M,
+                Date = Convert.ToDateTime("2012-12-31")
+            };
+            BankTransaction bankTransaction4 = new BankTransaction
+            {
+                FITID = "91234567803",
+                Merchant = "R/P to Jack Doe",
+                Amount = -2000.50M,
+                Date = Convert.ToDateTime("2012-12-31")
+            };
+            _bankTransactionList1.Add(bankTransaction1);
+            _bankTransactionList1.Add(bankTransaction2);
+
+            _bankTransactionList2.Add(bankTransaction2);
+            _bankTransactionList2.Add(bankTransaction3);
+
+            _bankTransactionList3.Add(bankTransaction1);
+            _bankTransactionList3.Add(bankTransaction2);
+            _bankTransactionList3.Add(bankTransaction3);
+
+            _bankTransactionList4.Add(bankTransaction1);
+            _bankTransactionList4.Add(bankTransaction2);
+            _bankTransactionList4.Add(bankTransaction3);
+            _bankTransactionList4.Add(bankTransaction4);
+        }
+
         /// <summary>
         /// Happy path for the GetSourceDetails method
         /// </summary>
@@ -65,7 +120,7 @@ namespace Plutus.Banktransaction.Tests.CS
 
             //Act
             BanktransactionRepo repo = new BanktransactionRepo();
-            List<BankTransaction> output1 = repo.ExtractBankTransactionsFromOfx(input1).OrderBy(txn => txn.FITID).ToList();
+            List<BankTransaction> output1 = repo.ExtractBankTransactionsFromOfx(input1).ToList();
 
             //Assert
             Assert.AreEqual(0, output1.Count);
@@ -84,7 +139,7 @@ namespace Plutus.Banktransaction.Tests.CS
 
             //Act
             BanktransactionRepo repo = new BanktransactionRepo();
-            List<BankTransaction> output1 = repo.ExtractBankTransactionsFromOfx(input1).OrderBy(txn => txn.FITID).ToList();
+            List<BankTransaction> output1 = repo.ExtractBankTransactionsFromOfx(input1).ToList();
 
             //Assert
             Assert.AreEqual(0, output1.Count);
@@ -98,34 +153,17 @@ namespace Plutus.Banktransaction.Tests.CS
         public void ExtractBankTransactionsFromOfx_OnValidInputs_ReturnTxnList()
         {
             //Arrange
-            List<BankTransaction> txnList = new List<BankTransaction>
-            {
-                new BankTransaction
-                {
-                    FITID = "91234567800",
-                    Merchant = "R/P to John Doe",
-                    Amount = -500.50M,
-                    Date = Convert.ToDateTime("2011-12-30")
-                },
-                new BankTransaction
-                {
-                    FITID = "91234567801",
-                    Merchant = "R/P to Jane Doe",
-                    Amount = -1000.50M,
-                    Date = Convert.ToDateTime("2011-12-31")
-                }
-            }.OrderBy(txn => txn.FITID).ToList();
-
+            
             //Act
             BanktransactionRepo repo = new BanktransactionRepo
             {
                 FolderName = @"..\..\..\TestFiles2"
             };
-            List<BankTransaction> output1 = repo.GetBankTransactions().OrderBy(txn => txn.FITID).ToList();
+            List<BankTransaction> output1 = repo.GetBankTransactions().ToList();
 
             //Assert
-            Assert.AreEqual(2, output1.Count);
-            CollectionAssert.AreEqual(txnList, output1, new BankTransactionComparer());
+            Assert.AreEqual(_bankTransactionList1.Count, output1.Count);
+            CollectionAssert.AreEqual(_bankTransactionList1, output1, new BankTransactionComparer());
         }
 
         /// <summary>
@@ -135,80 +173,19 @@ namespace Plutus.Banktransaction.Tests.CS
         public void ConsolidateTransactionsFromLists_OnExecute_ReturnConsolidatedTxnList()
         {
             //Arrange
-            List<BankTransaction> txnListConsolidated = new List<BankTransaction>
-            {
-                new BankTransaction
-                {
-                    FITID = "91234567800",
-                    Merchant = "R/P to John Doe",
-                    Amount = -500.50M,
-                    Date = Convert.ToDateTime("2011-12-30")
-                },
-                new BankTransaction
-                {
-                    FITID = "91234567801",
-                    Merchant = "R/P to Jane Doe",
-                    Amount = -1000.50M,
-                    Date = Convert.ToDateTime("2011-12-31")
-                },
-                new BankTransaction
-                {
-                    FITID = "91234567802",
-                    Merchant = "R/P to Jack Doe",
-                    Amount = -1500.50M,
-                    Date = Convert.ToDateTime("2012-12-31")
-                }
-            }.OrderBy(txn => txn.FITID).ToList();
-
-            List<BankTransaction> txnList1 = new List<BankTransaction>
-            {
-                new BankTransaction
-                {
-                    FITID = "91234567800",
-                    Merchant = "R/P to John Doe",
-                    Amount = -500.50M,
-                    Date = Convert.ToDateTime("2011-12-30")
-                },
-                new BankTransaction
-                {
-                    FITID = "91234567801",
-                    Merchant = "R/P to Jane Doe",
-                    Amount = -1000.50M,
-                    Date = Convert.ToDateTime("2011-12-31")
-                }
-            }.OrderBy(txn => txn.FITID).ToList();
-
-            List<BankTransaction> txnList2 = new List<BankTransaction>
-            {
-                new BankTransaction
-                {
-                    FITID = "91234567801",
-                    Merchant = "R/P to Jane Doe",
-                    Amount = -1000.50M,
-                    Date = Convert.ToDateTime("2011-12-31")
-                },
-                new BankTransaction
-                {
-                    FITID = "91234567802",
-                    Merchant = "R/P to Jack Doe",
-                    Amount = -1500.50M,
-                    Date = Convert.ToDateTime("2012-12-31")
-                }
-            }.OrderBy(txn => txn.FITID).ToList();
-
             List<List<BankTransaction>> txnInput = new List<List<BankTransaction>>
             {
-                txnList1,
-                txnList2
+                _bankTransactionList1,
+                _bankTransactionList2
             };
 
             //Act
             BanktransactionRepo repo = new BanktransactionRepo();
-            List<BankTransaction> output1 = repo.ConsolidateTransactionsFromLists(txnInput).OrderBy(txn => txn.FITID).ToList();
+            List<BankTransaction> output1 = repo.ConsolidateTransactionsFromLists(txnInput).ToList();
 
             //Assert
-            Assert.AreEqual(3, output1.Count);
-            CollectionAssert.AreEqual(txnListConsolidated, output1, new BankTransactionComparer());
+            Assert.AreEqual(_bankTransactionList3.Count, output1.Count);
+            CollectionAssert.AreEqual(_bankTransactionList3, output1, new BankTransactionComparer());
         }
 
         /// <summary>
@@ -218,30 +195,6 @@ namespace Plutus.Banktransaction.Tests.CS
         public void GetBankTransactions_OnFolderChange_ReturnTxnList()
         {
             //Arrange
-            List<BankTransaction> txnList = new List<BankTransaction>
-            {
-                new BankTransaction
-                {
-                    FITID = "91234567800",
-                    Merchant = "R/P to John Doe",
-                    Amount = -500.50M,
-                    Date = Convert.ToDateTime("2011-12-30")
-                },
-                new BankTransaction
-                {
-                    FITID = "91234567801",
-                    Merchant = "R/P to Jane Doe",
-                    Amount = -1000.50M,
-                    Date = Convert.ToDateTime("2011-12-31")
-                },
-                new BankTransaction
-                {
-                    FITID = "91234567802",
-                    Merchant = "R/P to Jack Doe",
-                    Amount = -1500.50M,
-                    Date = Convert.ToDateTime("2012-12-31")
-                }
-            }.OrderBy(txn => txn.FITID).ToList();
             File.Delete(@"..\..\..\TestFiles3\Ofx_Valid_3.OFX");
 
             //Act
@@ -249,14 +202,14 @@ namespace Plutus.Banktransaction.Tests.CS
             {
                 FolderName = @"..\..\..\TestFiles3"
             };
-            List<BankTransaction> output1 = repo.GetBankTransactions().OrderBy(txn => txn.FITID).ToList();
+            List<BankTransaction> output1 = repo.GetBankTransactions().ToList();
             File.Copy(@"..\..\..\TestFiles1\Ofx_Valid_3.OFX", @"..\..\..\TestFiles3\Ofx_Valid_3.OFX");
             System.Threading.Thread.Sleep(5000);
-            output1 = repo.GetBankTransactions().OrderBy(txn => txn.FITID).ToList();
+            output1 = repo.GetBankTransactions().ToList();
 
             //Assert
-            Assert.AreEqual(3, output1.Count);
-            CollectionAssert.AreEqual(txnList, output1, new BankTransactionComparer());
+            Assert.AreEqual(_bankTransactionList4.Count, output1.Count);
+            CollectionAssert.AreEqual(_bankTransactionList4, output1, new BankTransactionComparer());
         }
     }
 }

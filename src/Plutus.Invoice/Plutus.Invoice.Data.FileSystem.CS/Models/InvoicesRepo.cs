@@ -15,7 +15,7 @@ namespace Plutus.Invoices.Data.FileSystem.CS.Models
     /// ... from the Business account.
     /// These are obtained from CSV files
     /// </summary>
-    public class InvoiceRepo : IInvoice
+    public class InvoicesRepo : IInvoice
     {
         private bool _isDirty;
         private FileSystemWatcher _watcher;
@@ -150,7 +150,7 @@ namespace Plutus.Invoices.Data.FileSystem.CS.Models
         /// ... scanning directory, and Invoices in them, adding them to repository, ...
         /// ... and initializing watcher method based on directory size
         /// </summary>
-        public InvoiceRepo()
+        public InvoicesRepo()
         {
             _invoicesList = new List<Invoice>();
             _isDirty = true;
@@ -178,13 +178,13 @@ namespace Plutus.Invoices.Data.FileSystem.CS.Models
         /// <summary>
         /// Get Invoices from xml string
         /// </summary>
-        public IEnumerable<Invoice> ExtractInvoiceFromCsv(string content)
+        public IEnumerable<Invoice> ExtractInvoicesFromCsv(string content)
         {
             IEnumerable<Invoice> txnList = new List<Invoice>();
             try
             {
                 CsvExtractor csvExtractor = new CsvExtractor();
-                txnList = csvExtractor.ExtractInvoiceFromCsvString(content);
+                txnList = csvExtractor.ExtractInvoicesFromCsvString(content);
                 ClassLogger.Info("File Csv parsed");
                 ClassLogger.Info("Invoices read from files");
             }
@@ -259,7 +259,7 @@ namespace Plutus.Invoices.Data.FileSystem.CS.Models
                     {
                         List<Invoice> InvoicesList = new List<Invoice>();
                         string fileContent = ExtractCsvFileContent(file.FileName);
-                        InvoicesList = ExtractInvoiceFromCsv(fileContent).ToList();
+                        InvoicesList = ExtractInvoicesFromCsv(fileContent).ToList();
                         ClassLogger.Info($"Invoices found: [{InvoicesList.Count}]");
                         Invoiceslists.Add(InvoicesList);
                     }

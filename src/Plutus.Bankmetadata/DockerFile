@@ -1,6 +1,13 @@
 # Plutus Banktransaction API
 FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR C:/Software
+
+RUN powershell -NoProfile -Command `
+    New-Item -Type Directory C:\install; \
+    Invoke-WebRequest https://github.com/sbalanchickoo/Plutus/releases/download/Plutus.Bankmetadata.1.0.5/Plutus.Bankmetadata.zip \
+	-OutFile C:\install\Plutus.Bankmetadata.zip; \ 
+
+    
 COPY Publish .
 EXPOSE 8080
 ENTRYPOINT [ "dotnet", "Plutus.Bankmetadata.Service.API.dll"]

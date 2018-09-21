@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Plutus.Banktransaction.Service.API.Controllers.V1;
-using Plutus.Banktransaction.Tests.CS.EqualityComparers;
+using Plutus.Invoices.Service.API.Controllers.V1;
+using Plutus.Invoices.Tests.CS.EqualityComparers;
 using Plutus.SharedLibrary.CS.Enums;
 using Plutus.SharedLibrary.CS.Interfaces;
 using Plutus.SharedLibrary.CS.Models;
@@ -11,52 +11,56 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Plutus.Banktransaction.Tests.CS
+namespace Plutus.Invoices.Tests.CS
 {
     /// <summary>
-    /// Test class to test methods in BanktransactionController controller class
+    /// Test class to test methods in InvoicesController controller class
     /// </summary>
     [TestClass]
-    public class BanktransactionControllerTest
+    public class InvoicesControllerTest
     {
-        private IBankTransaction _repo;
-        private ILogger<BanktransactionsController> _logger;
-        private List<BankTransaction> _txnList1 = new List<BankTransaction>();
+        private IInvoice _repo;
+        private ILogger<InvoicesController> _logger;
+
+        private List<Invoice> _invList1 = new List<Invoice>();
 
         /// <summary>
-        /// Test initialization step, List of fake data, Moq repo
+        /// Initial setup, create Source List, Moq repo object
         /// </summary>
         [TestInitialize]
         public void Setup()
         {
-            BankTransaction txn1 = new BankTransaction
+            Invoice inv1 = new Invoice
             {
-                FITID = "91234567800",
-                Merchant = "R/P to John Doe",
-                Amount = -500.50M,
-                Date = Convert.ToDateTime("2011-12-30")
+                Date = Convert.ToDateTime("2010-01-01"),
+                Amount = 100.00M,
+                ClientName = "Client 1",
+                InvoiceReference = "Invoice Ref 1",
+                Description = "Description 1"
             };
-            BankTransaction txn2 = new BankTransaction
+            Invoice inv2 = new Invoice
             {
-                FITID = "91234567801",
-                Merchant = "R/P to Jane Doe",
-                Amount = -1000.50M,
-                Date = Convert.ToDateTime("2011-12-31")
+                Date = Convert.ToDateTime("2011-01-01"),
+                Amount = 200.00M,
+                ClientName = "Client 2",
+                InvoiceReference = "Invoice Ref 2",
+                Description = "Description 2"
             };
-            BankTransaction txn3 = new BankTransaction
+            Invoice inv3 = new Invoice
             {
-                FITID = "91234567802",
-                Merchant = "R/P to Jack Doe",
-                Amount = -1500.50M,
-                Date = Convert.ToDateTime("2012-12-31")
+                Date = Convert.ToDateTime("2012-01-01"),
+                Amount = 300.00M,
+                ClientName = "Client 2",
+                InvoiceReference = "Invoice Ref 3",
+                Description = "Description 3"
             };
 
-            _txnList1.Add(txn1);
-            _txnList1.Add(txn2);
-            _txnList1.Add(txn3);
+            _invList1.Add(inv1);
+            _invList1.Add(inv2);
+            _invList1.Add(inv3);
 
-            var repositoryMock = new Mock<IBankTransaction>();
-            repositoryMock.Setup(r => r.GetBankTransactions()).Returns(_txnList1);
+            var repositoryMock = new Mock<IInvoice>();
+            repositoryMock.Setup(r => r.GetInvoices()).Returns(_invList1);
             InputDataSource inputSource = new InputDataSource
             {
                 InputDataSourceType = DataSource.FileSystem,
@@ -65,7 +69,7 @@ namespace Plutus.Banktransaction.Tests.CS
             repositoryMock.Setup(r => r.GetSourceDetails()).Returns(inputSource);
             _repo = repositoryMock.Object;
 
-            var mock = new Mock<ILogger<BanktransactionsController>>();
+            var mock = new Mock<ILogger<InvoicesController>>();
             _logger = mock.Object;
         }
 
@@ -76,7 +80,7 @@ namespace Plutus.Banktransaction.Tests.CS
         public void SourceDetail_OnExecute_ReturnSourceDetailType()
         {
             //Arrange
-            BanktransactionsController controller = new BanktransactionsController(_repo, _logger);
+            InvoicesController controller = new InvoicesController(_repo, _logger);
 
             //Act
             var inputDataSource = controller.SourceDetail();
@@ -93,7 +97,7 @@ namespace Plutus.Banktransaction.Tests.CS
         public void SourceDetail_OnExecute_ReturnSourceDetail()
         {
             //Arrange
-            BanktransactionsController controller = new BanktransactionsController(_repo, _logger);
+            InvoicesController controller = new InvoicesController(_repo, _logger);
 
             //Act
             var inputDataSource = controller.SourceDetail();
@@ -106,16 +110,16 @@ namespace Plutus.Banktransaction.Tests.CS
         }
 
         /// <summary>
-        /// Happy path for the BankTransactions action - type
+        /// Happy path for the Invoices action - type
         /// </summary>
         [TestMethod]
-        public void BankTransactions_OnExecute_ReturnBankTransactionsType()
+        public void Invoices_OnExecute_ReturnInvoicesType()
         {
             //Arrange
-            BanktransactionsController controller = new BanktransactionsController(_repo, _logger);
+            InvoicesController controller = new InvoicesController(_repo, _logger);
 
             //Act
-            var inputDataSource = controller.BankTransactions();
+            var inputDataSource = controller.Invoices();
             var requestResult = inputDataSource as OkObjectResult;
 
             //Assert
@@ -123,22 +127,22 @@ namespace Plutus.Banktransaction.Tests.CS
         }
 
         /// <summary>
-        /// Happy path for the BankTransactions action - content
+        /// Happy path for the Invoices action - content
         /// </summary>
         [TestMethod]
-        public void BankTransactions_OnExecute_ReturnBankTransactions()
+        public void Invoices_OnExecute_ReturnInvoices()
         {
             //Arrange
-            BanktransactionsController controller = new BanktransactionsController(_repo, _logger);
+            InvoicesController controller = new InvoicesController(_repo, _logger);
 
             //Act
-            var inputDataSource = controller.BankTransactions();
+            var inputDataSource = controller.Invoices();
             var requestResult = inputDataSource as OkObjectResult;
-            List<BankTransaction> txnList = (List<BankTransaction>)requestResult.Value;
+            List<Invoice> txnList = (List<Invoice>)requestResult.Value;
 
             //Assert
             Assert.AreEqual(3, txnList.Count);
-            CollectionAssert.AreEqual(_repo.GetBankTransactions().ToList(), txnList, new BankTransactionComparer());
+            CollectionAssert.AreEqual(_repo.GetInvoices().ToList(), txnList, new InvoicesComparer());
         }
     }
 }

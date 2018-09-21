@@ -47,14 +47,7 @@ namespace Plutus.Expenses.Tests.CS
             _expList1.Add(exp2);
             
             var repositoryMock = new Mock<IExpense>();
-            repositoryMock.Setup(r => r.GetExpenses()).Returns
-                (
-                _expList1.OrderBy(txn => txn.Date)
-                .OrderBy(txn => txn.Amount)
-                .OrderBy(txn => txn.TransactionCategory)
-                .OrderBy(txn => txn.Description)
-                .ToList()
-                );
+            repositoryMock.Setup(r => r.GetExpenses()).Returns(_expList1.ToList());
             InputDataSource inputSource = new InputDataSource
             {
                 InputDataSourceType = DataSource.FileSystem,

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using CsvHelper;
+using System.Globalization;
 
 namespace Plutus.Invoices.Data.FileSystem.CS.Models
 {
@@ -44,6 +45,8 @@ namespace Plutus.Invoices.Data.FileSystem.CS.Models
             {
                 var csv = new CsvReader(new StringReader(csvContent));
                 csv.Configuration.Delimiter = Delimiter;
+                TextInfo info = CultureInfo.CurrentCulture.TextInfo;
+                csv.Configuration.PrepareHeaderForMatch = header => info.ToTitleCase(header);
                 var anonymousTypeDefinition = new
                 {
                     Date = string.Empty,
@@ -51,7 +54,6 @@ namespace Plutus.Invoices.Data.FileSystem.CS.Models
                     ClientName = string.Empty,
                     InvoiceRef = string.Empty,
                     Total = string.Empty,
-                    Amount = string.Empty,
                     Net = string.Empty,
                     Vat = string.Empty,
                 };
@@ -61,7 +63,7 @@ namespace Plutus.Invoices.Data.FileSystem.CS.Models
                     Invoice row = new Invoice
                     {
                         Date = Convert.ToDateTime(input.Date),
-                        Amount = Convert.ToDecimal(input.Amount),
+                        Amount = Convert.ToDecimal(input.Total),
                         ClientName = input.ClientName,
                         InvoiceReference = input.InvoiceRef,
                         Description = input.Description
