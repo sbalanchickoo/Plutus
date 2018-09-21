@@ -4,8 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Banktransaction", "Plutus.Banktransaction", "{5E93397D-52D4-453F-B8B9-9D99E3EE6ACE}"
+	ProjectSection(SolutionItems) = preProject
+		Plutus.Banktransaction\DockerFile = Plutus.Banktransaction\DockerFile
+		Plutus.Banktransaction\Plutus.Banktransaction.yml = Plutus.Banktransaction\Plutus.Banktransaction.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.SharedLibrary", "Plutus.SharedLibrary", "{AD0FE00F-C790-4BBC-BF19-5015EF735EDB}"
+	ProjectSection(SolutionItems) = preProject
+		Plutus.SharedLibrary\Plutus.SharedLibrary.yml = Plutus.SharedLibrary\Plutus.SharedLibrary.yml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.SharedLibrary.CS", "Plutus.SharedLibrary\Plutus.SharedLibrary.CS\Plutus.SharedLibrary.CS.csproj", "{26E58960-00BE-4368-9E84-8EA438E52C37}"
 EndProject
@@ -16,6 +23,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Banktransaction.Tests.CS", "Plutus.Banktransaction\Plutus.Banktransaction.Tests.CS\Plutus.Banktransaction.Tests.CS.csproj", "{858C29F0-36D8-46FC-891D-F15F3DB142B4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Bankmetadata", "Plutus.Bankmetadata", "{7E172569-6045-4F5A-874F-AD3E9B061E24}"
+	ProjectSection(SolutionItems) = preProject
+		Plutus.Bankmetadata\DockerFile = Plutus.Bankmetadata\DockerFile
+		Plutus.Bankmetadata\Plutus.Bankmetadata.yml = Plutus.Bankmetadata\Plutus.Bankmetadata.yml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Bankmetadata.Data.FileSystem.CS", "Plutus.Bankmetadata\Plutus.Bankmetadata.Data.FileSystem.CS\Plutus.Bankmetadata.Data.FileSystem.CS.csproj", "{DA81AFB5-0A4C-485D-B3B1-82ABDE388C4C}"
 EndProject
@@ -24,6 +35,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Bankmetadata.Tests.CS", "Plutus.Bankmetadata\Plutus.Bankmetadata.Tests.CS\Plutus.Bankmetadata.Tests.CS.csproj", "{AAAEE8DE-5A72-437B-A5E3-5F4F038F7004}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Expenses", "Plutus.Expenses", "{64CB6046-180C-492C-B398-ECD582AC007E}"
+	ProjectSection(SolutionItems) = preProject
+		Plutus.Expense\Plutus.Expense.yml = Plutus.Expense\Plutus.Expense.yml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expenses.Data.FileSystem.CS", "Plutus.Expense\Plutus.Expense.Data.FileSystem.CS\Plutus.Expenses.Data.FileSystem.CS.csproj", "{0548022D-B966-44D6-A223-D2AF7BD17B0C}"
 EndProject
@@ -32,6 +46,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Expenses.Tests.CS", "Plutus.Expense\Plutus.Expense.Tests.CS\Plutus.Expenses.Tests.CS.csproj", "{7C2367DF-A6A9-462A-B9D2-379240AF4C2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Invoice", "Plutus.Invoice", "{DF2573A5-DF8F-4D65-872A-2BF231EE1CA6}"
+	ProjectSection(SolutionItems) = preProject
+		Plutus.Invoice\Plutus.Invoice.yml = Plutus.Invoice\Plutus.Invoice.yml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Invoice.Data.FileSystem.CS", "Plutus.Invoice\Plutus.Invoice.Data.FileSystem.CS\Plutus.Invoice.Data.FileSystem.CS.csproj", "{612CE474-C4F1-4762-BD5B-90500BBEE3C9}"
 EndProject

@@ -1,0 +1,5 @@
+"DATE","employeename","description","detail","total","vat","net",
+"2010-01-01","Srikant Balan","Category 1","Payee 1","100.00","0.00","100.00",
+"2011-01-01","Srikant Balan","Category 2","Payee 2","200.00","0.00","200.00",
+"2012-01-01","Srikant Balan","Category 2","Payee 2","300.00","0.00","300.00",
+"2012-01-01","Srikant Balan","Category 3","Payee 2","300.00","0.00","300.00",

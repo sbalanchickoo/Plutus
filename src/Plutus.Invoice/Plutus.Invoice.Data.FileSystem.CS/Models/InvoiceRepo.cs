@@ -8,18 +8,18 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using NLog;
 
-namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
+namespace Plutus.Invoices.Data.FileSystem.CS.Models
 {
     /// <summary>
-    /// This class is a local file-system-based repository of Bank Metadatas ...
-    /// ... from the Business Bank account.
+    /// This class is a local file-system-based repository of Invoices ...
+    /// ... from the Business account.
     /// These are obtained from CSV files
     /// </summary>
-    public class InvoiceRepo : IBankMetadata
+    public class InvoiceRepo : IInvoice
     {
         private bool _isDirty;
         private FileSystemWatcher _watcher;
-        private IEnumerable<BankMetadata> _bankMetadataList;
+        private IEnumerable<Invoice> _invoicesList;
         private IEnumerable<DirectoryFile> _fileList;
         private void OnChanged(object source, FileSystemEventArgs e)
         {
@@ -43,7 +43,7 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
                 switch (extension.ToUpper())
                 {
                     case ".OFX":
-                        newFile.DirectoryFileType = FileType.BankMetadata;
+                        newFile.DirectoryFileType = FileType.Invoice;
                         break;
                     case ".CSV":
                         switch (file.Substring(FolderName.Length + 1, 3).ToUpper())
@@ -55,7 +55,7 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
                                 newFile.DirectoryFileType = FileType.Expense;
                                 break;
                             case "BAN":
-                                newFile.DirectoryFileType = FileType.BankMetadata;
+                                newFile.DirectoryFileType = FileType.Invoice;
                                 break;
                             default:
                                 newFile.DirectoryFileType = FileType.Invalid;
@@ -147,12 +147,12 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
 
         /// <summary>
         /// Primary constructor, setting Folder to watch from config, ...
-        /// ... scanning directory, and Metadatas in them, adding them to repository, ...
+        /// ... scanning directory, and Invoices in them, adding them to repository, ...
         /// ... and initializing watcher method based on directory size
         /// </summary>
         public InvoiceRepo()
         {
-            _bankMetadataList = new List<BankMetadata>();
+            _invoicesList = new List<Invoice>();
             _isDirty = true;
         }
 
@@ -176,17 +176,17 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         }
 
         /// <summary>
-        /// Get Bank Metadatas from xml string
+        /// Get Invoices from xml string
         /// </summary>
-        public IEnumerable<BankMetadata> ExtractBankMetadataFromCsv(string content)
+        public IEnumerable<Invoice> ExtractInvoiceFromCsv(string content)
         {
-            IEnumerable<BankMetadata> txnList = new List<BankMetadata>();
+            IEnumerable<Invoice> txnList = new List<Invoice>();
             try
             {
                 CsvExtractor csvExtractor = new CsvExtractor();
-                txnList = csvExtractor.ExtractBankMetadataFromCsvString(content);
+                txnList = csvExtractor.ExtractInvoiceFromCsvString(content);
                 ClassLogger.Info("File Csv parsed");
-                ClassLogger.Info("Metadata read from files");
+                ClassLogger.Info("Invoices read from files");
             }
             catch (Exception ex)
             {
@@ -203,23 +203,23 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         }
 
         /// <summary>
-        /// For each BankMetadata FileType in FileList list, send path to GetFileBankMetadatas ...
-        /// ... and for each Metadata, add to repository list if not already present
+        /// For each Invoice FileType in FileList list, send path to GetFileInvoices ...
+        /// ... and for each Invoices, add to repository list if not already present
         /// </summary>
-        public IEnumerable<BankMetadata> ConsolidateMetadataFromLists(IEnumerable<IEnumerable<BankMetadata>> MetadataLists)
+        public IEnumerable<Invoice> ConsolidateInvoicesFromLists(IEnumerable<IEnumerable<Invoice>> InvoicesLists)
         {
-            List<BankMetadata> txnList = new List<BankMetadata>();
-            foreach (var MetadataList in MetadataLists)
+            List<Invoice> txnList = new List<Invoice>();
+            foreach (var InvoicesList in InvoicesLists)
             {
-                foreach (var Metadata in MetadataList)
+                foreach (var Invoices in InvoicesList)
                 {
-                    if (!(txnList.Contains(Metadata)))
+                    if (!(txnList.Contains(Invoices)))
                     {
-                        txnList.Add(Metadata);
+                        txnList.Add(Invoices);
                     }
                 }
             }
-            ClassLogger.Info("Metadata consolidated");
+            ClassLogger.Info("Invoices consolidated");
             return txnList;
         }
         #endregion
@@ -241,33 +241,33 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         }
 
         /// <summary>
-        /// Returns distinct list of all Bank Metadatas contained within files in a folder, ...
+        /// Returns distinct list of all Invoices contained within files in a folder, ...
         /// return from local list if still valid or scan afresh if repository is marked dirty
         /// </summary>
-        public IEnumerable<BankMetadata> GetBankMetadata()
+        public IEnumerable<Invoice> GetInvoices()
         {
             if (_isDirty)
             {
                 ClassLogger.Info("Repository dirty, repopulating repo");
                 _fileList = ScanFolder();
-                ClassLogger.Info($"Files found: [{_fileList.Where(f => f.DirectoryFileType == FileType.BankMetadata).ToList().Count()}]");
-                List<List<BankMetadata>> Metadatalists = new List<List<BankMetadata>>();
+                ClassLogger.Info($"Files found: [{_fileList.Where(f => f.DirectoryFileType == FileType.Invoice).ToList().Count()}]");
+                List<List<Invoice>> Invoiceslists = new List<List<Invoice>>();
                 foreach (var file in _fileList)
                 {
                     ClassLogger.Info($"Start reading File: [{file.FileName}]");
-                    if (file.DirectoryFileType == FileType.BankMetadata)
+                    if (file.DirectoryFileType == FileType.Invoice)
                     {
-                        List<BankMetadata> MetadataList = new List<BankMetadata>();
+                        List<Invoice> InvoicesList = new List<Invoice>();
                         string fileContent = ExtractCsvFileContent(file.FileName);
-                        MetadataList = ExtractBankMetadataFromCsv(fileContent).ToList();
-                        ClassLogger.Info($"Metadata found: [{MetadataList.Count}]");
-                        Metadatalists.Add(MetadataList);
+                        InvoicesList = ExtractInvoiceFromCsv(fileContent).ToList();
+                        ClassLogger.Info($"Invoices found: [{InvoicesList.Count}]");
+                        Invoiceslists.Add(InvoicesList);
                     }
                     ClassLogger.Info($"Finished reading File: [{file.FileName}]");
                 }
-                List<BankMetadata> consolidatedBankMetadataList = new List<BankMetadata>();
-                consolidatedBankMetadataList = ConsolidateMetadataFromLists(Metadatalists).ToList();
-                _bankMetadataList = consolidatedBankMetadataList;
+                List<Invoice> consolidatedInvoiceList = new List<Invoice>();
+                consolidatedInvoiceList = ConsolidateInvoicesFromLists(Invoiceslists).ToList();
+                _invoicesList = consolidatedInvoiceList;
                 ClassLogger.Info("Repository repopulation complete");
                 _isDirty = false;
             }
@@ -275,8 +275,8 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
             {
                 ClassLogger.Info("Repository not dirty.");
             }
-            ClassLogger.Info("RepositoryMetadata request complete.");
-            return _bankMetadataList;
+            ClassLogger.Info("RepositoryInvoices request complete.");
+            return _invoicesList;
         }
         #endregion
     }

@@ -135,7 +135,7 @@ namespace Plutus.Expenses.Tests.CS
             List<Expense> txnList = (List<Expense>)requestResult.Value;
 
             //Assert
-            Assert.AreEqual(3, txnList.Count);
+            Assert.AreEqual(2, txnList.Count);
             CollectionAssert.AreEqual(_repo.GetExpenses().ToList(), txnList, new ExpenseComparer());
         }
     }

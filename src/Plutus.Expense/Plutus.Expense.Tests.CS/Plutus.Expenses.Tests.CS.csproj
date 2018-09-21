@@ -20,12 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestFiles3\" />
-    <Folder Include="TestFiles2\" />
-    <Folder Include="TestFiles1\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Plutus.Expense.Data.FileSystem.CS\Plutus.Expenses.Data.FileSystem.CS.csproj" />
     <ProjectReference Include="..\Plutus.Expense.Service.API\Plutus.Expenses.Service.API.csproj" />
   </ItemGroup>

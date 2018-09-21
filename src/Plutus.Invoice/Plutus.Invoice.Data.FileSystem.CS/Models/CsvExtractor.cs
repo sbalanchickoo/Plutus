@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using CsvHelper;
 
-namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
+namespace Plutus.Invoices.Data.FileSystem.CS.Models
 {
     /// <summary>
     /// Helper class to extract BankTransaction from Ofx
@@ -37,35 +37,34 @@ namespace Plutus.Bankmetadata.Data.FileSystem.CS.Models
         /// <summary>
         /// Controller method, takes in CSV string and returns IEnumerable
         /// </summary>
-        public IEnumerable<BankMetadata> ExtractBankMetadataFromCsvString(string csvContent)
+        public IEnumerable<Invoice> ExtractInvoicesFromCsvString(string csvContent)
         {
-            List<BankMetadata> txnList = new List<BankMetadata>();
+            List<Invoice> txnList = new List<Invoice>();
             try
             {
                 var csv = new CsvReader(new StringReader(csvContent));
                 csv.Configuration.Delimiter = Delimiter;
                 var anonymousTypeDefinition = new
                 {
-                    date = string.Empty,
-                    bankdescription = string.Empty,
-                    accountnumber = string.Empty,
-                    employeename = string.Empty,
-                    description = string.Empty,
-                    usercomments = string.Empty,
-                    amount = string.Empty,
-                    net = string.Empty,
-                    vat = string.Empty,
+                    Date = string.Empty,
+                    Description = string.Empty,
+                    ClientName = string.Empty,
+                    InvoiceRef = string.Empty,
+                    Total = string.Empty,
+                    Amount = string.Empty,
+                    Net = string.Empty,
+                    Vat = string.Empty,
                 };
                 var txnListInput = csv.GetRecords(anonymousTypeDefinition);
                 foreach (var input in txnListInput)
                 {
-                    BankMetadata row = new BankMetadata
+                    Invoice row = new Invoice
                     {
-                        Amount = Convert.ToDecimal(input.amount),
-                        Merchant = input.bankdescription,
-                        Date = Convert.ToDateTime(input.date),
-                        UserComments = input.usercomments,
-                        TransactionCategory = input.description
+                        Date = Convert.ToDateTime(input.Date),
+                        Amount = Convert.ToDecimal(input.Amount),
+                        ClientName = input.ClientName,
+                        InvoiceReference = input.InvoiceRef,
+                        Description = input.Description
                     };
                     txnList.Add(row);
                 }
