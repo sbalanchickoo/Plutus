@@ -1,0 +1,8 @@
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
+WORKDIR C:/Software
+
+RUN curl -O -L https://github.com/sbalanchickoo/Plutus/releases/download/Plutus.Banktransactions.1.0.7/Plutus.Banktransactions.zip
+RUN tar.exe -xf Plutus.Banktransactions.zip
+
+EXPOSE 5002
+ENTRYPOINT [ "dotnet", "Plutus.Banktransactions.Service.API.dll"]

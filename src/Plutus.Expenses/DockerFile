@@ -1,0 +1,8 @@
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
+WORKDIR C:/Software
+
+RUN curl -O -L https://github.com/sbalanchickoo/Plutus/releases/download/Plutus.Expenses.1.0.7/Plutus.Expenses.zip
+RUN tar.exe -xf Plutus.Expenses.zip
+
+EXPOSE 5001
+ENTRYPOINT [ "dotnet", "Plutus.Expenses.Service.API.dll"]

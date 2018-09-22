@@ -1,0 +1,43 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+
+# folder filter
+only_commits:
+  files:
+    - src/Plutus.Expenses/
+skip_commits:
+  files:
+    - src/Plutus.Expenses/DockerFile  
+skip_tags: true
+
+# restore packages
+before_build:
+- ps: >-
+    set-location "src\Plutus.Expenses"
+
+    nuget restore -source "https://api.nuget.org/v3/index.json;https://www.myget.org/F/plutus-shared-library/api/v3/index.json"
+
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Debug
+
+build:
+  project: src\Plutus.Expenses\Plutus.Expenses.sln
+  verbosity: minimal
+
+# create deployment package
+after_build:
+- ps: msbuild.exe "Plutus.Expenses.Service.API/Plutus.Expenses.Service.API.csproj" /p:DeployOnBuild=true  /p:PublishProfile=FolderProfile /verbosity:quiet
+- 7z a Plutus.Expenses.zip .\Plutus.Expenses.Service.API\bin\Release\Publish\*
+
+# artifacts configuration 
+artifacts:
+- path: src\Plutus.Expenses\Plutus.Expenses.zip
+
+# deployment
+deploy:
+- provider: GitHub
+  release: Plutus.Expenses.$(appveyor_build_version)
+  on:
+    branch: master
+  auth_token:
+    secure: JKduR9KJ31hrb+yFg8iuc6cG47GJgKw/DAV7zYmfrFT6zRiHkEmLc5RQFnDILdp6

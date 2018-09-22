@@ -1,0 +1,8 @@
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
+WORKDIR C:/Software
+
+RUN curl -O -L https://github.com/sbalanchickoo/Plutus/releases/download/Plutus.Invoices.1.0.7/Plutus.Invoices.zip
+RUN tar.exe -xf Plutus.Invoices.zip
+
+EXPOSE 5001
+ENTRYPOINT [ "dotnet", "Plutus.Invoices.Service.API.dll"]
