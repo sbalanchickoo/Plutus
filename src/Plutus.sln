@@ -36,6 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plutus.Bankmetadata.Tests.C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Expenses", "Plutus.Expenses", "{64CB6046-180C-492C-B398-ECD582AC007E}"
 	ProjectSection(SolutionItems) = preProject
+		Plutus.Expense\DockerFile = Plutus.Expense\DockerFile
 		Plutus.Expense\Plutus.Expense.yml = Plutus.Expense\Plutus.Expense.yml
 	EndProjectSection
 EndProject
@@ -48,6 +49,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plutus.Invoice", "Plutus.Invoice", "{DF2573A5-DF8F-4D65-872A-2BF231EE1CA6}"
 	ProjectSection(SolutionItems) = preProject
 		Plutus.Bankmetadata\DockerFile = Plutus.Bankmetadata\DockerFile
+		Plutus.Invoice\DockerFile = Plutus.Invoice\DockerFile
 		Plutus.Invoice\Plutus.Invoice.yml = Plutus.Invoice\Plutus.Invoice.yml
 	EndProjectSection
 EndProject
