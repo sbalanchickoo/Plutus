@@ -5,46 +5,32 @@
 This solution is named Plutus, after the Greek god of wealth.
 This solution and repository contains projects required for Business Account tracking.
 
-The functions that the projects must accomplish are
+The Projects accomplish the following
 
-- Cater Allen
-  - Take in ofx file and output csv in specified format
-  - Take in csv file and output distinct master list of csv
+### Inputs
 
-- InTouch Bank
-  - Take in csv and output csv in specified format
-  - Take in csv and output distinct master list of csv
+- Bank transactions  
+  Take in OFX files (obtained from Bank) and output Json and Xml via API call
+- Bank metadata  
+  Take in Bank metadata via csv files (obtained from accounting portal) and output Json and Xml via API call
+- Expenses  
+  Take in Expense data via csv files (obtained from accounting portal) and output Json and Xml via API call
+- Invoices  
+  Take in Invoice data via csv files (obtained from accounting portal) and output Json and Xml via API call
 
-- InTouch Invoice
-  - Take in csv and output csv in specified format
-  - Take in csv and output distinct master list of csv
+### Processing
 
-- InTouch Expense
-  - Take in csv and output csv in specified format
-  - Take in csv and output distinct master list of csv
+- Merchant management
+  - Assign a new Merchant as one of existing ones
+  - If none of the existing ones apply, then create a new one
 
-- InTouch Bank
-  - Take in csv and output csv in specified format
-  - Take in csv and output distinct master list of csv
+### General functionality
 
-- Load processed content into SQLite
-
-- UI
-  - Match transactions
-  - Mark transactions as duplicate
-  - Mark transactions as Salary
-  - Mark transactions as Dividend
-  - Mark transactions as Expense reimbursement
-  - Mark transactions as Invoice received
-  - Add new Payee
-
-- Inputting data
-  - Local drive
-  - Data lake
-
-- Logging throughout the applications
-
-- Unit tests
-
-- SSAS Tabular model solution for various calculations on data
-
+- Data inputs
+  - Local file system
+  - Azure Data lake
+- Deployment
+  - Can be via Docker containers
+  - Also possible to run locally using Kestrel
+- Logging 
+  - Throughout the application using NLog
