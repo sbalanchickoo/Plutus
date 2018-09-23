@@ -1,8 +1,11 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR C:/Software
 
-RUN curl -O -L https://github.com/sbalanchickoo/Plutus/releases/download/Plutus.Bankmetadata.1.0.7/Plutus.Bankmetadata.zip
+RUN curl -O -L https://github.com/sbalanchickoo/Plutus/releases/download/Plutus.Bankmetadata.1.0.1/Plutus.Bankmetadata.zip
 RUN tar.exe -xf Plutus.Bankmetadata.zip
 
 EXPOSE 5001
 ENTRYPOINT [ "dotnet", "Plutus.Bankmetadata.Service.API.dll"]
+
+#docker build -t bankmetadata .
+#docker run -d -p 5001:5001 --name bankmetadata -v C:\Docker\Bankmetadata:C:\Software\Inputdata bankmetadata

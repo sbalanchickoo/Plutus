@@ -1,8 +1,11 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR C:/Software
 
-RUN curl -O -L https://github.com/sbalanchickoo/Plutus/releases/download/Plutus.Invoices.1.0.7/Plutus.Invoices.zip
+RUN curl -O -L https://github.com/sbalanchickoo/Plutus/releases/download/Plutus.Invoices.1.0.1/Plutus.Invoices.zip
 RUN tar.exe -xf Plutus.Invoices.zip
 
-EXPOSE 5001
+EXPOSE 5004
 ENTRYPOINT [ "dotnet", "Plutus.Invoices.Service.API.dll"]
+
+#docker build -t invoices .
+#docker run -d -p 5004:5004 --name invoices -v C:\Docker\Invoices:C:\Software\Inputdata invoices
