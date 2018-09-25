@@ -33,27 +33,24 @@ namespace Plutus.UI.Data.EF.Data
             set { _connectionString = value; }
         }
 
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<Client> Client { get; set; }
 
-        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Invoice> Invoice { get; set; }
 
-        public DbSet<MasterMerchant> MasterMerchants { get; set; }
+        public DbSet<MasterMerchant> MasterMerchant { get; set; }
 
-        public DbSet<MasterMerchantCategory> MasterMerchantCategories { get; set; }
+        public DbSet<MasterMerchantCategory> MasterMerchantCategory { get; set; }
 
-        public DbSet<Merchant> Merchants { get; set; }
+        public DbSet<Merchant> Merchant { get; set; }
 
-        public DbSet<Salary> Salaries { get; set; }
+        public DbSet<Salary> Salary { get; set; }
 
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Transaction> Transaction { get; set; }
 
-        public DbSet<TransactionType> TransactionCategories { get; set; }
+        public DbSet<TransactionType> TransactionCategory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Client>().ToTable("Client");
-            modelBuilder.Entity<Invoice>().ToTable("Invoice");
-
             modelBuilder.Entity<TransactionType>().HasData(
                 new TransactionType() { TransactionTypeName = "Incorporation Fee" }
                 );
