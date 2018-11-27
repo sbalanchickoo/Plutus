@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This solution is named Plutus, after the Greek god of wealth.
+This solution is named Plutus, after the Greek god.
 This solution and repository contains projects required for Business Account tracking.
 
 The Projects accomplish the following
