@@ -2,14 +2,23 @@
 
 ## Introduction
 
-This solution is named Plutus, after the Greek god.
+This solution is named Plutus, a Greek god.
 This solution and repository contains projects required for Business Account tracking.
+
+## Process
+
+1. Download the extracts from InTouch Accounting Portal
+2. REST APIs running somewhere (host/container/web server)
+3. Copy the extracts into the shared folder for the API
+4. Open Web Interface
+    a. Identify any new Merchant or mark them same as an existing Merchant
+5. Identify any Bank transactions are Salary transfers, Dividend transfers, or Invoice payments
 
 The Projects accomplish the following
 
 ### Inputs
 
-- Bank transactions  
+- Bank transactions 
   Take in OFX files (obtained from Bank) and output Json and Xml via API call
 - Bank metadata  
   Take in Bank metadata via csv files (obtained from accounting portal) and output Json and Xml via API call
