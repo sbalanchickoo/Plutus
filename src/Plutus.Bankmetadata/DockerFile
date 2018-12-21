@@ -8,4 +8,4 @@ EXPOSE 5001
 ENTRYPOINT [ "dotnet", "Plutus.Bankmetadata.Service.API.dll"]
 
 #docker build -t bankmetadata .
-#docker run -d -p 5001:5001 --name bankmetadata -v C:\Docker\Bankmetadata:C:\Software\Inputdata bankmetadata
+#docker run -d -p 5001:5001 --name bankmetadata -v C:\Docker\Bankmetadata:C:\Software\Inputdata bankmetadata -m 1024m --cpuset-cpus="1"

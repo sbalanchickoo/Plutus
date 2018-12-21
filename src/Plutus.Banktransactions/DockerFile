@@ -8,4 +8,4 @@ EXPOSE 5002
 ENTRYPOINT [ "dotnet", "Plutus.Banktransactions.Service.API.dll"]
 
 #docker build -t banktransactions .
-#docker run -d -p 5002:5002 --name banktransactions -v C:\Docker\Banktransactions:C:\Software\Inputdata banktransactions
+#docker run -d -p 5002:5002 --name banktransactions -v C:\Docker\Banktransactions:C:\Software\Inputdata banktransactions -m 1024m --cpuset-cpus="1"

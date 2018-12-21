@@ -8,4 +8,4 @@ EXPOSE 5003
 ENTRYPOINT [ "dotnet", "Plutus.Expenses.Service.API.dll"]
 
 #docker build -t expenses .
-#docker run -d -p 5003:5003 --name expenses -v C:\Docker\Expenses:C:\Software\Inputdata expenses
+#docker run -d -p 5003:5003 --name expenses -v C:\Docker\Expenses:C:\Software\Inputdata expenses -m 1024m --cpuset-cpus="1"
