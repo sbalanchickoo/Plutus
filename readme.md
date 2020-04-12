@@ -1,8 +1,7 @@
 # Plutus
+This repo is named after the Greek god.
 
 ## Introduction
-
-This solution is named Plutus, a Greek god.
 This solution and repository contains projects required for Business Account tracking.
 
 ## Process
