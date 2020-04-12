@@ -7,5 +7,6 @@ RUN tar.exe -xf Plutus.Invoices.zip
 EXPOSE 5004
 ENTRYPOINT [ "dotnet", "Plutus.Invoices.Service.API.dll"]
 
-#docker build -t invoices .
-#docker run -d -p 5004:5004 --name invoices -v C:\Docker\Invoices:C:\Software\Inputdata invoices -m 1024m --cpuset-cpus="1"
+#
+
+#docker run -d -p 5004:5004 --name invoices -v C:\Docker\Invoices:C:\Software\Inputdata invoices
